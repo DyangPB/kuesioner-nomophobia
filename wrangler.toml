@@ -1,0 +1,20 @@
+name = "kuesioner-nomophobia"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nomophobia-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+[[r2_buckets]]
+binding = "SCREENTIME_BUCKET"
+bucket_name = "nomophobia-screentime"
+
+[vars]
+QUESTIONNAIRE_EXPORT_TOKEN = "REPLACE_WITH_YOUR_OWN_SECRET_TOKEN"

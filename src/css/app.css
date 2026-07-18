@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+
+@source '../../public/**/*.html';
+@source '../../public/**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+}
+
+html {
+    font-size: 16px;
+}
+
+@media (min-width: 768px) {
+    html { font-size: 17px; }
+}
+
+@media (min-width: 1024px) {
+    html { font-size: 18.5px; }
+}
+
+@media (min-width: 1440px) {
+    html { font-size: 20px; }
+}
+
+body {
+    font-family: 'Lora', ui-serif, Georgia, serif;
+    background: linear-gradient(135deg, #f8c9d3 0%, #fbdcc4 55%, #fdecd3 100%);
+    min-height: 100vh;
+}
+
+.font-heading {
+    font-family: 'Playfair Display', ui-serif, Georgia, serif;
+}
+
+.btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 2.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-family: 'Playfair Display', ui-serif, Georgia, serif;
+    color: white;
+    background: linear-gradient(90deg, #c9587e 0%, #7a3350 100%);
+    box-shadow: 0 6px 16px rgba(122, 51, 80, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-pill:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(122, 51, 80, 0.45);
+}
+
+.btn-pill:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-pill-outline {
+    background: transparent;
+    color: #7a3350;
+    border: 2px solid #7a3350;
+    box-shadow: none;
+}
+
+/* Radio "pop" selection effect */
+.option-radio {
+    position: relative;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    border: 2px solid #b06a82;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.4);
+    transition: border-color 0.15s ease;
+}
+
+.option-radio .dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #c9587e 0%, #7a3350 100%);
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease;
+}
+
+.option-radio.selected {
+    border-color: #7a3350;
+}
+
+.option-radio.selected .dot {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.option-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    cursor: pointer;
+}
+
+.card-surface {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(6px);
+}
+
+.result-badge {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', ui-serif, Georgia, serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: white;
+}
+
+.result-badge.color-green { background: #7cc576; }
+.result-badge.color-yellow { background: #e8c34a; }
+.result-badge.color-orange { background: #f0a15d; }
+.result-badge.color-red { background: #e2604f; }
+.result-badge.color-darkred { background: #8a2c40; }
+
+[x-cloak] { display: none !important; }
+
+/* Result carousel: blurred peek cards either side of the active slide */
+.carousel-peek {
+    filter: blur(2px);
+    opacity: 0.5;
+    transform: scale(0.9);
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-peek:hover {
+    filter: blur(0px);
+    opacity: 0.85;
+    transform: scale(0.95);
+}
+
+/* Result carousel: prev/next arrow buttons */
+.carousel-arrow {
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carousel-arrow:hover {
+    transform: scale(1.12);
+    box-shadow: 0 4px 12px rgba(122, 51, 80, 0.25);
+}
+
+.carousel-arrow:active {
+    transform: scale(0.96);
+}
+
+/* Result carousel: uniform card height across main + peek slides, no scrolling */
+.carousel-card-height {
+    min-height: 460px;
+}
+
+@media (min-width: 768px) {
+    .carousel-card-height { min-height: 400px; }
+}
+
+/* Result carousel: slide-in animation triggered on every navigation */
+@keyframes carousel-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.carousel-anim {
+    animation: carousel-slide-in 0.35s ease;
+}
