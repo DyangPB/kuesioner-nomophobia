@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Seberapa Lengket Kamu terhadap Ponselmu? &mdash; Kuesioner Nomophobia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        window.QUESTIONNAIRE_DATA = {
+            nmpqCount: {{ count($nmpqItems) }},
+            dassDepressionCount: {{ count($dassDepressionItems) }},
+            dassAnxietyCount: {{ count($dassAnxietyItems) }},
+            nmpqCategories: @json($nomophobiaCategories),
+            dassDepressionCategories: @json($dassDepressionCategories),
+            dassAnxietyCategories: @json($dassAnxietyCategories),
+        };
+    </script>
+</head>
+<body class="text-[#3a2b30]" x-data="questionnaireApp()">
+
+    <div class="w-full max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto min-h-screen px-6 sm:px-10 md:px-14 lg:px-16 py-10 md:py-16 flex flex-col">
+
+        {{-- ============ PAGE 1: LANDING ============ --}}
+        <section x-show="currentStepName === 'landing'" x-cloak class="flex-1 flex flex-col justify-center items-center text-center gap-8 py-16">
+            <h1 class="font-heading font-bold text-4xl md:text-6xl leading-tight max-w-2xl">Seberapa Lengket Kamu terhadap Ponselmu?</h1>
+            <p class="text-sm md:text-base leading-relaxed max-w-xs md:max-w-md">
+                Ayo cari tahu dengan menjadi partisipan penelitian dan mengisi kuisioner kecenderungan Nomophobia
+                (No Mobile Phone Phobia) pada diri kamu!
+            </p>
+            <button type="button" class="btn-pill" @click="next()">selanjutnya</button>
+        </section>
+
+        {{-- ============ PAGE 2: INFO NOMOPHOBIA ============ --}}
+        <section x-show="currentStepName === 'info'" x-cloak class="flex-1 flex flex-col gap-8 py-8">
+            <div class="text-center">
+                <p class="font-heading font-semibold text-lg md:text-xl">tapi sebelum itu,</p>
+                <h2 class="font-heading font-bold text-3xl md:text-5xl leading-tight">kenali sedikit mengenai nomophobia!</h2>
+            </div>
+
+            <div class="flex flex-col items-center gap-4 text-center">
+                <img src="{{ asset('images/info/nomophobia-chained.png') }}" alt="Ilustrasi orang terikat rantai pada ponsel"
+                    class="w-40 md:w-52 h-auto" style="mix-blend-mode: multiply;">
+                <p class="text-sm leading-relaxed">
+                    <strong>nomophobia (no mobile phone phobia)</strong> adalah kondisi cemas, takut, maupun tidak
+                    nyaman ketika seseorang tidak dapat mengakses ponselnya.
+                </p>
+            </div>
+
+            <div class="flex flex-col items-center gap-4 text-center">
+                <img src="{{ asset('images/info/nomophobia-wifi-off.png') }}" alt="Ilustrasi ikon Wi-Fi terputus"
+                    class="w-32 md:w-40 h-auto" style="mix-blend-mode: multiply;">
+                <p class="text-sm leading-relaxed">
+                    nomophobia dapat timbul karena berbagai keadaan, contohnya seperti kehabisan daya ponsel atau
+                    kehilangan akses internet saat dibutuhkan.
+                </p>
+            </div>
+
+            <div class="flex flex-col items-center gap-4 text-center">
+                <img src="{{ asset('images/info/nomophobia-anxious-hug.png') }}" alt="Ilustrasi orang memeluk lutut karena cemas"
+                    class="w-40 md:w-52 h-auto" style="mix-blend-mode: multiply;">
+                <p class="text-sm leading-relaxed">
+                    nomophobia saat ini telah berkembang menjadi fenomena psikologis yang umum di dunia dan telah
+                    dikaitkan dengan berbagai psikopatologi, seperti depresi dan kecemasan.
+                </p>
+            </div>
+
+            <div class="flex justify-center pt-4">
+                <button type="button" class="btn-pill" @click="next()">selanjutnya</button>
+            </div>
+        </section>
+
+        {{-- ============ PAGE 3: CONSENT ============ --}}
+        <section x-show="currentStepName === 'consent'" x-cloak class="flex-1 flex flex-col justify-center gap-6 py-8 text-sm leading-relaxed">
+            <div class="card-surface p-6 flex flex-col gap-4">
+                <p><strong>Kuesioner ini terdiri dari:</strong></p>
+                <ol class="list-decimal list-inside space-y-1">
+                    <li>Tujuh pertanyaan tentang identitas dan sosiodemografi</li>
+                    <li>Dua puluh pertanyaan mengenai nomophobia (Nomophobia Questionnaire)</li>
+                    <li>Tujuh pertanyaan mengenai gejala depresi (DASS-21 Subskala Depresi)</li>
+                    <li>Tujuh pertanyaan mengenai gejala kecemasan (DASS-21 Subskala Kecemasan)</li>
+                </ol>
+                <p>Pengisian kuesioner membutuhkan waktu &plusmn; <strong>15 menit</strong>.</p>
+                <p>Setelah mengisi kuesioner, Anda akan memperoleh <strong>hasil skor tingkat gejala nomophobia</strong>
+                    beserta <strong>edukasi terkait nomophobia</strong>.</p>
+                <p>Tenang saja, penelitian ini tidak menimbulkan risiko maupun efek samping yang membahayakan!</p>
+                <p><strong>Klik jika Anda bersedia menjadi partisipan penelitian!</strong></p>
+            </div>
+            <div class="flex justify-center">
+                <button type="button" class="btn-pill" @click="next()">saya bersedia dan mulai pengisian kuesioner</button>
+            </div>
+        </section>
+
+        {{-- ============ PAGE 4: BIODATA / SOSIODEMOGRAFI ============ --}}
+        <section x-show="currentStepName === 'biodata'" x-cloak class="flex-1 flex flex-col gap-7 py-8">
+
+            <h2 class="font-heading font-bold text-3xl text-center">Identitas dan Kebiasaan Partisipan</h2>
+
+            <div>
+                <label class="font-heading font-semibold text-sm block mb-2">Nama atau Inisial</label>
+                <input type="text" x-model="form.name"
+                    class="w-full rounded-full border border-[#b06a82] bg-white/40 px-5 py-3 text-sm outline-none focus:border-[#7a3350]"
+                    placeholder="">
+            </div>
+
+            <div>
+                <p class="font-heading font-semibold text-sm mb-2">Usia</p>
+                <div class="flex flex-col gap-1">
+                    <label class="option-row" @click="form.age_group = 'under18'">
+                        <span class="option-radio" :class="{ selected: form.age_group === 'under18' }"><span class="dot"></span></span>
+                        <span class="text-sm">&lt; 18 tahun</span>
+                    </label>
+                    <label class="option-row" @click="form.age_group = '18plus'">
+                        <span class="option-radio" :class="{ selected: form.age_group === '18plus' }"><span class="dot"></span></span>
+                        <span class="text-sm">&ge; 18 tahun</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <p class="font-heading font-semibold text-sm mb-2">Jenis Kelamin</p>
+                <div class="flex gap-8">
+                    <label class="option-row" @click="form.gender = 'perempuan'">
+                        <span class="option-radio" :class="{ selected: form.gender === 'perempuan' }"><span class="dot"></span></span>
+                        <span class="text-sm">Perempuan</span>
+                    </label>
+                    <label class="option-row" @click="form.gender = 'laki-laki'">
+                        <span class="option-radio" :class="{ selected: form.gender === 'laki-laki' }"><span class="dot"></span></span>
+                        <span class="text-sm">Laki-laki</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <p class="font-heading font-semibold text-sm mb-2">Angkatan</p>
+                <div class="flex gap-6">
+                    @foreach (['2023', '2024', '2025'] as $year)
+                        <label class="option-row" @click="form.cohort = '{{ $year }}'">
+                            <span class="option-radio" :class="{ selected: form.cohort === '{{ $year }}' }"><span class="dot"></span></span>
+                            <span class="text-sm">{{ $year }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            <div>
+                <p class="font-heading font-semibold text-sm mb-2">Apakah anda memiliki perangkat lain selain ponsel?</p>
+                <div class="flex flex-col gap-1">
+                    <label class="option-row" @click="form.other_device = 'hanya_ponsel'">
+                        <span class="option-radio" :class="{ selected: form.other_device === 'hanya_ponsel' }"><span class="dot"></span></span>
+                        <span class="text-sm">Hanya ponsel</span>
+                    </label>
+                    <label class="option-row" @click="form.other_device = 'tablet'">
+                        <span class="option-radio" :class="{ selected: form.other_device === 'tablet' }"><span class="dot"></span></span>
+                        <span class="text-sm">Tablet/iPad/sejenis</span>
+                    </label>
+                    <label class="option-row" @click="form.other_device = 'laptop'">
+                        <span class="option-radio" :class="{ selected: form.other_device === 'laptop' }"><span class="dot"></span></span>
+                        <span class="text-sm">Laptop/komputer/sejenis</span>
+                    </label>
+                    <label class="option-row" @click="form.other_device = 'konsol_gim'">
+                        <span class="option-radio" :class="{ selected: form.other_device === 'konsol_gim' }"><span class="dot"></span></span>
+                        <span class="text-sm">Konsol gim seperti Nintendo Switch/PlayStation/sejenis</span>
+                    </label>
+                    <label class="option-row" @click="form.other_device = 'lainnya'">
+                        <span class="option-radio" :class="{ selected: form.other_device === 'lainnya' }"><span class="dot"></span></span>
+                        <span class="text-sm">Lainnya</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <p class="font-heading font-semibold text-sm mb-2">Kegiatan seperti apa yang Anda lakukan ketika menggunakan ponsel?</p>
+                <div class="flex flex-col gap-2">
+                    <label class="option-row" @click="form.phone_activity = 'akademik'">
+                        <span class="option-radio" :class="{ selected: form.phone_activity === 'akademik' }"><span class="dot"></span></span>
+                        <span class="text-sm"><strong>Akademik</strong> (belajar/membaca literatur kedokteran (e-book, artikel jurnal, website kesehatan); mengerjakan tugas atau quiz/mengakses aplikasi kedokteran interaktif (complete anatomy, HeartSounds, dll); menonton video pembelajaran)</span>
+                    </label>
+                    <label class="option-row" @click="form.phone_activity = 'belanja'">
+                        <span class="option-radio" :class="{ selected: form.phone_activity === 'belanja' }"><span class="dot"></span></span>
+                        <span class="text-sm">Belanja atau berbisnis di e-commerce atau platform sejenis</span>
+                    </label>
+                    <label class="option-row" @click="form.phone_activity = 'komunikasi'">
+                        <span class="option-radio" :class="{ selected: form.phone_activity === 'komunikasi' }"><span class="dot"></span></span>
+                        <span class="text-sm">Komunikasi (chat, telepon, video-call)</span>
+                    </label>
+                    <label class="option-row" @click="form.phone_activity = 'hiburan'">
+                        <span class="option-radio" :class="{ selected: form.phone_activity === 'hiburan' }"><span class="dot"></span></span>
+                        <span class="text-sm">Hiburan (bermain gim, mengakses media sosial, streaming video pendek/film, menggambar, mendengarkan musik)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <p class="font-heading font-semibold text-sm mb-2">Berapa lama rata-rata durasi penggunaan ponsel Anda per hari?</p>
+                <div class="flex flex-col gap-1">
+                    <label class="option-row" @click="form.daily_usage = 'kurang_4'">
+                        <span class="option-radio" :class="{ selected: form.daily_usage === 'kurang_4' }"><span class="dot"></span></span>
+                        <span class="text-sm">&lt; 4 jam</span>
+                    </label>
+                    <label class="option-row" @click="form.daily_usage = '4_6'">
+                        <span class="option-radio" :class="{ selected: form.daily_usage === '4_6' }"><span class="dot"></span></span>
+                        <span class="text-sm">4-6 jam</span>
+                    </label>
+                    <label class="option-row" @click="form.daily_usage = 'lebih_6'">
+                        <span class="option-radio" :class="{ selected: form.daily_usage === 'lebih_6' }"><span class="dot"></span></span>
+                        <span class="text-sm">&gt; 6 jam</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <p class="font-heading font-semibold text-sm mb-3">Silahkan mengunggah rata-rata penggunaan ponsel anda berdasarkan screentime mingguan pada bagian pengaturan ponsel Anda! <span class="font-normal text-xs">(opsional)</span></p>
+
+                <div class="flex gap-3 mb-3">
+                    <div class="flex-1 flex flex-col justify-end gap-1.5">
+                        <img src="{{ asset('images/info/screentime-example-android.jpeg') }}"
+                            alt="Contoh tangkapan layar Digital Wellbeing (Android) yang menunjukkan durasi layar mingguan"
+                            class="w-full h-auto rounded-xl border border-[#b06a82]/40 object-cover">
+                        <p class="text-[11px] leading-snug opacity-70">
+                            <strong>Android:</strong> Setelan/Pengaturan &gt; Digital Wellbeing &gt; grafik rata-rata mingguan
+                        </p>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-end gap-1.5">
+                        <img src="{{ asset('images/info/screentime-example-ios.jpeg') }}"
+                            alt="Contoh tangkapan layar Screen Time (iOS) yang menunjukkan durasi layar mingguan"
+                            class="w-full h-auto rounded-xl border border-[#b06a82]/40 object-cover">
+                        <p class="text-[11px] leading-snug opacity-70">
+                            <strong>iOS:</strong> Setelan/Pengaturan &gt; Screen Time/Waktu Layar &gt; Mingguan
+                        </p>
+                    </div>
+                </div>
+                <p class="text-xs mb-2 opacity-70">Contoh acuan: tangkapan layar durasi penggunaan ponsel mingguan. (opsional jika ponsel Anda tidak memiliki fitur laporan mingguan)</p>
+
+                <label
+                    class="w-full flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[#b06a82] bg-white/30 px-4 py-8 text-center cursor-pointer transition-colors hover:bg-white/50 hover:border-[#7a3350]"
+                    @dragover.prevent @drop.prevent="onFileDrop($event)"
+                >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="opacity-60">
+                        <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="#7a3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="#7a3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-sm font-medium" x-text="screentimePreviewName || 'Klik atau tarik file ke sini'"></span>
+                    <span class="text-xs opacity-60" x-show="!screentimePreviewName">format jpg/png, maks 5MB</span>
+                    <input type="file" accept=".jpg,.jpeg,.png" class="hidden" @change="onFileChange($event)">
+                </label>
+            </div>
+
+            <p class="text-xs text-red-600 min-h-[1rem]" x-text="submitError"></p>
+
+            <div class="flex justify-between pt-4">
+                <button type="button" class="btn-pill btn-pill-outline" @click="back()">&larr; kembali</button>
+                <button type="button" class="btn-pill" @click="next()">selanjutnya</button>
+            </div>
+        </section>
+
+        {{-- ============ PAGE 5: NMP-Q ============ --}}
+        <section x-show="currentStepName === 'nmpq'" x-cloak class="flex-1 flex flex-col gap-7 py-8">
+            <h2 class="font-heading font-bold text-3xl text-center">Nomophobia Questionnaire (NMP-Q)</h2>
+            <p class="text-sm leading-relaxed text-center">
+                Kuesioner ini bertujuan mengukur derajat keparahan nomophobia, mulai dari tidak ada nomophobia,
+                nomophobia ringan, nomophobia sedang, nomophobia berat. Bacalah setiap pertanyaan dengan hati-hati
+                dan pilih satu jawaban yang sesuai dengan kondisi diri Anda selama satu bulan terakhir. Tidak ada
+                jawaban yang benar maupun salah!
+            </p>
+
+            <div class="card-surface p-4 text-xs leading-relaxed">
+                <p class="font-semibold mb-1">Skala penelitian adalah sebagai berikut:</p>
+                @foreach ($nmpqScale as $value => $label)
+                    <p>{{ $value }} = {{ $label }}</p>
+                @endforeach
+            </div>
+
+            @foreach ($nmpqItems as $index => $item)
+                <div class="border-b border-[#b06a82]/20 pb-5">
+                    <p class="text-sm mb-3">{{ $item }}</p>
+                    <div class="flex justify-between px-1">
+                        @foreach (array_keys($nmpqScale) as $value)
+                            <label class="flex flex-col items-center gap-1 cursor-pointer" @click="selectOption('nmpq', {{ $index }}, {{ $value }})">
+                                <span class="option-radio" :class="{ selected: isSelected('nmpq', {{ $index }}, {{ $value }}) }"><span class="dot"></span></span>
+                                <span class="text-[10px]">{{ $value }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+
+            <p class="text-xs text-red-600 min-h-[1rem]" x-text="submitError"></p>
+
+            <div class="flex justify-between pt-4">
+                <button type="button" class="btn-pill btn-pill-outline" @click="back()">&larr; kembali</button>
+                <button type="button" class="btn-pill" @click="next()">selanjutnya &rarr;</button>
+            </div>
+        </section>
+
+        {{-- ============ PAGE 6: DASS DEPRESI ============ --}}
+        <section x-show="currentStepName === 'dass_depression'" x-cloak class="flex-1 flex flex-col gap-7 py-8">
+            <div class="text-center">
+                <h2 class="font-heading font-bold text-3xl leading-tight">Depression, Anxiety, and Stress Scale-21 (DASS-21)</h2>
+                <p class="font-heading font-semibold text-lg mt-1">Subskala depresi</p>
+            </div>
+            <p class="text-sm leading-relaxed text-center">
+                Kuesioner ini bertujuan mengukur derajat keparahan gejala depresi. Bacalah setiap pertanyaan dengan
+                hati-hati dan pilih satu jawaban yang sesuai dengan diri Anda selama satu minggu terakhir. Tidak ada
+                jawaban yang benar maupun salah!
+            </p>
+
+            <div class="card-surface p-4 text-xs leading-relaxed">
+                <p class="font-semibold mb-1">Skala penelitian adalah sebagai berikut:</p>
+                @foreach ($dassScale as $value => $label)
+                    <p>{{ $value - 1 }} = {{ $label }}</p>
+                @endforeach
+            </div>
+
+            @foreach ($dassDepressionItems as $index => $item)
+                <div class="border-b border-[#b06a82]/20 pb-5 text-center">
+                    <p class="text-sm mb-3">{{ $item }}</p>
+                    <div class="flex justify-center gap-8">
+                        @foreach (array_keys($dassScale) as $value)
+                            <label class="flex flex-col items-center gap-1 cursor-pointer" @click="selectOption('dass_depression', {{ $index }}, {{ $value }})">
+                                <span class="option-radio" :class="{ selected: isSelected('dass_depression', {{ $index }}, {{ $value }}) }"><span class="dot"></span></span>
+                                <span class="text-[10px]">{{ $value }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+
+            <p class="text-xs text-red-600 min-h-[1rem]" x-text="submitError"></p>
+
+            <div class="flex justify-between pt-4">
+                <button type="button" class="btn-pill btn-pill-outline" @click="back()">&larr; kembali</button>
+                <button type="button" class="btn-pill" @click="next()">selanjutnya</button>
+            </div>
+        </section>
+
+        {{-- ============ PAGE 7: DASS KECEMASAN ============ --}}
+        <section x-show="currentStepName === 'dass_anxiety'" x-cloak class="flex-1 flex flex-col gap-7 py-8">
+            <div class="text-center">
+                <h2 class="font-heading font-bold text-3xl leading-tight">Depression, Anxiety, and Stress Scale-21 (DASS-21)</h2>
+                <p class="font-heading font-semibold text-lg mt-1">Subskala kecemasan</p>
+            </div>
+            <p class="text-sm leading-relaxed text-center">
+                Kuesioner ini bertujuan mengukur derajat keparahan gejala kecemasan. Bacalah setiap pertanyaan dengan
+                hati-hati dan pilih satu jawaban yang sesuai dengan diri Anda selama satu minggu terakhir. Tidak ada
+                jawaban yang benar maupun salah!
+            </p>
+
+            <div class="card-surface p-4 text-xs leading-relaxed">
+                <p class="font-semibold mb-1">Skala penelitian adalah sebagai berikut:</p>
+                @foreach ($dassScale as $value => $label)
+                    <p>{{ $value - 1 }} = {{ $label }}</p>
+                @endforeach
+            </div>
+
+            @foreach ($dassAnxietyItems as $index => $item)
+                <div class="border-b border-[#b06a82]/20 pb-5 text-center">
+                    <p class="text-sm mb-3">{{ $item }}</p>
+                    <div class="flex justify-center gap-8">
+                        @foreach (array_keys($dassScale) as $value)
+                            <label class="flex flex-col items-center gap-1 cursor-pointer" @click="selectOption('dass_anxiety', {{ $index }}, {{ $value }})">
+                                <span class="option-radio" :class="{ selected: isSelected('dass_anxiety', {{ $index }}, {{ $value }}) }"><span class="dot"></span></span>
+                                <span class="text-[10px]">{{ $value }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+
+            <p class="text-xs text-red-600 min-h-[1rem]" x-text="submitError"></p>
+
+            <div class="flex justify-between pt-4">
+                <button type="button" class="btn-pill btn-pill-outline" @click="back()">&larr; kembali</button>
+                <button type="button" class="btn-pill" :disabled="submitting" @click="next()">
+                    <span x-show="!submitting">lihat hasil &rarr;</span>
+                    <span x-show="submitting">mengirim...</span>
+                </button>
+            </div>
+        </section>
+
+        {{-- ============ RESULT PAGE: CAROUSEL (dynamic) ============ --}}
+        <section x-show="currentStepName === 'result' && results && !showInfografis" x-cloak class="flex-1 flex flex-col items-center text-center gap-6 py-12">
+            <template x-if="results">
+                <div class="flex flex-col items-center gap-6 w-full">
+
+                    <h2 class="font-heading font-bold text-3xl text-center" x-text="
+                        carouselIndex === 0 ? 'Hasil Nomophobia Questionnaire (NMP-Q)'
+                        : carouselIndex === 1 ? 'Hasil DASS-21 Subskala Depresi'
+                        : 'Hasil DASS-21 Subskala Kecemasan'
+                    "></h2>
+
+                    <div class="w-full flex items-center justify-center gap-2 md:gap-6"
+                        @touchstart="onTouchStart($event)" @touchend="onTouchEnd($event)">
+
+                        {{-- Peek: previous slide (blurred, dimmed, smaller) --}}
+                        <button type="button" @click="carouselPrev()" aria-label="lihat hasil sebelumnya"
+                            x-effect="carouselIndex; $el.classList.remove('carousel-anim'); void $el.offsetWidth; $el.classList.add('carousel-anim')"
+                            class="carousel-peek carousel-card-height hidden sm:flex shrink-0 w-24 md:w-36 card-surface px-3 py-6 flex-col items-center justify-center gap-3 overflow-hidden">
+                            <template x-if="prevCarouselCategory">
+                                <div class="flex flex-col items-center gap-3">
+                                    <span class="result-badge scale-75" :class="'color-' + prevCarouselCategory.color" x-text="prevCarouselCategory.badge"></span>
+                                    <p class="font-heading font-bold text-sm leading-snug text-center" x-text="prevCarouselCategory.title"></p>
+                                </div>
+                            </template>
+                        </button>
+
+                        {{-- Main active slide --}}
+                        <div class="relative z-10 w-full max-w-xl carousel-card-height card-surface px-6 md:px-10 py-10 md:py-14 shadow-xl overflow-hidden flex flex-col justify-center"
+                            x-effect="carouselIndex; $el.classList.remove('carousel-anim'); void $el.offsetWidth; $el.classList.add('carousel-anim')">
+                            <template x-if="activeCarouselCategory">
+                                <div class="flex flex-col items-center gap-5">
+                                    <span class="result-badge" :class="'color-' + activeCarouselCategory.color" x-text="activeCarouselCategory.badge"></span>
+                                    <h2 class="font-heading font-bold text-2xl md:text-3xl leading-tight max-w-md md:max-w-xl" x-text="activeCarouselCategory.title"></h2>
+                                    <div class="flex flex-col gap-3">
+                                        <template x-for="(paragraph, idx) in activeCarouselCategory.body" :key="idx">
+                                            <p class="text-sm leading-relaxed" x-text="paragraph"></p>
+                                        </template>
+                                    </div>
+                                    <button type="button" x-show="carouselIndex === 0" @click="showInfografis = true"
+                                        class="text-sm underline text-[#7a3350] font-semibold">
+                                        Klik disini untuk mengakses infografis seputar nomophobia
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+
+                        {{-- Peek: next slide (blurred, dimmed, smaller) --}}
+                        <button type="button" @click="carouselNext()" aria-label="lihat hasil selanjutnya"
+                            x-effect="carouselIndex; $el.classList.remove('carousel-anim'); void $el.offsetWidth; $el.classList.add('carousel-anim')"
+                            class="carousel-peek carousel-card-height hidden sm:flex shrink-0 w-24 md:w-36 card-surface px-3 py-6 flex-col items-center justify-center gap-3 overflow-hidden">
+                            <template x-if="nextCarouselCategory">
+                                <div class="flex flex-col items-center gap-3">
+                                    <span class="result-badge scale-75" :class="'color-' + nextCarouselCategory.color" x-text="nextCarouselCategory.badge"></span>
+                                    <p class="font-heading font-bold text-sm leading-snug text-center" x-text="nextCarouselCategory.title"></p>
+                                </div>
+                            </template>
+                        </button>
+
+                    </div>
+
+                    <div class="flex gap-2">
+                        <template x-for="(slide, i) in carouselSlides" :key="slide">
+                            <button type="button" @click="goToCarouselSlide(i)" aria-label="`slide ${i + 1}`"
+                                class="w-2.5 h-2.5 rounded-full transition-colors"
+                                :class="carouselIndex === i ? 'bg-[#7a3350]' : 'bg-[#7a3350]/25'">
+                            </button>
+                        </template>
+                    </div>
+
+                    <div class="h-32 md:h-36"></div>
+                </div>
+            </template>
+
+            {{-- Fixed arrows: stay put regardless of carousel card height --}}
+            <button type="button" x-show="results && !showInfografis" x-cloak @click="carouselPrev()" aria-label="sebelumnya"
+                class="carousel-arrow flex fixed left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 rounded-full border-2 border-[#7a3350] bg-white/60 text-[#7a3350] items-center justify-center hover:bg-white/90">
+                &larr;
+            </button>
+            <button type="button" x-show="results && !showInfografis" x-cloak @click="carouselNext()" aria-label="selanjutnya"
+                class="carousel-arrow flex fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 rounded-full border-2 border-[#7a3350] bg-white/60 text-[#7a3350] items-center justify-center hover:bg-white/90">
+                &rarr;
+            </button>
+
+            <button type="button" x-show="results && !showInfografis" x-cloak
+                class="btn-pill fixed bottom-6 left-1/2 -translate-x-1/2 z-30" @click="restart()">
+                kembali ke landing page
+            </button>
+        </section>
+
+        {{-- ============ INFOGRAFIS PAGE (overlay, with back button) ============ --}}
+        <section x-show="showInfografis" x-cloak class="flex-1 flex flex-col gap-6 py-8">
+            <button type="button" @click="showInfografis = false"
+                class="btn-pill btn-pill-outline self-start text-sm">
+                &larr; kembali
+            </button>
+
+            <h2 class="font-heading font-bold text-3xl text-center">Kenali Nomophobia</h2>
+
+            <img src="{{ asset('images/edukasi/kenali-nomophobia.jpg') }}"
+                alt="Infografis edukasi mengenai nomophobia"
+                class="w-full max-w-xs sm:max-w-sm mx-auto h-auto rounded-2xl border border-[#b06a82]/40 shadow-lg">
+        </section>
+
+    </div>
+</body>
+</html>
