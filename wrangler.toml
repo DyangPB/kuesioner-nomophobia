@@ -2,6 +2,7 @@ name = "kuesioner-nomophobia"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
+account_id = "c6912e4168353f081950c3957984f6a1"
 
 [assets]
 directory = "./public"
@@ -10,11 +11,11 @@ binding = "ASSETS"
 [[d1_databases]]
 binding = "DB"
 database_name = "nomophobia-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "30bb8c00-fc10-41ec-80cb-de80e15d373c"
 
 [[r2_buckets]]
 binding = "SCREENTIME_BUCKET"
 bucket_name = "nomophobia-screentime"
 
-[vars]
-QUESTIONNAIRE_EXPORT_TOKEN = "REPLACE_WITH_YOUR_OWN_SECRET_TOKEN"
+# QUESTIONNAIRE_EXPORT_TOKEN disimpan sebagai secret (wrangler secret put), bukan di sini,
+# supaya tidak ikut ter-commit ke git.

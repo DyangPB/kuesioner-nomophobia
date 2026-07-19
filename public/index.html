@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seberapa Lengket Kamu terhadap Ponselmu? &mdash; Kuesioner Nomophobia</title>
+    <title>Nomophobia Questionnaire</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/app.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script type="module" src="/app.js"></script>
+    <script defer src="/data.js"></script>
+    <script defer src="/app.js"></script>
+    <script defer src="/vendor/alpine.min.js"></script>
 </head>
 <body class="text-[#3a2b30]" x-data="questionnaireApp()">
 
@@ -457,7 +458,7 @@
 
             <button type="button" x-show="results && !showInfografis" x-cloak
                 class="btn-pill fixed bottom-6 left-1/2 -translate-x-1/2 z-30" @click="restart()">
-                kembali ke landing page
+                kembali ke menu awal
             </button>
         </section>
 
