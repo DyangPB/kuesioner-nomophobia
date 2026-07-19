@@ -466,7 +466,7 @@
 
             <button type="button" x-show="results && !showInfografis" x-cloak
                 class="btn-pill fixed bottom-6 left-1/2 -translate-x-1/2 z-30" @click="restart()">
-                kembali ke landing page
+                kembali ke halaman awal
             </button>
         </section>
 
