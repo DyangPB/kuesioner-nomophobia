@@ -1,14 +1,3 @@
-import {
-    nmpqItems,
-    dassDepressionItems,
-    dassAnxietyItems,
-    nmpqScale,
-    dassScale,
-    nomophobiaCategories,
-    dassDepressionCategories,
-    dassAnxietyCategories,
-} from './data.js';
-
 const nmpqScaleEntries = Object.entries(nmpqScale).map(([value, label]) => ({ value: Number(value), label }));
 const dassScaleEntries = Object.entries(dassScale).map(([value, label]) => ({ value: Number(value), label }));
 
