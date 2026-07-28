@@ -21,7 +21,7 @@ document.addEventListener('alpine:init', () => {
         submitError: '',
         results: null,
         carouselIndex: 0,
-        carouselSlides: ['nmpq', 'dass_depression', 'dass_anxiety'],
+        carouselSlides: ['nmpq', 'dass_depression', 'dass_anxiety', 'disclaimer'],
         touchStartX: null,
         showInfografis: false,
 
