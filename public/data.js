@@ -1,7 +1,7 @@
 // Sumber data tunggal untuk kuesioner nomophobia — dipakai oleh Worker (validasi/scoring/export)
 // dan disalin ke public/data.js untuk dipakai frontend (lihat scripts/sync-data.js).
 
-const fieldLabels = {
+var fieldLabels = {
     age_group: {
         under18: '< 18 tahun',
         '18plus': '≥ 18 tahun',
@@ -30,7 +30,7 @@ const fieldLabels = {
     },
 };
 
-const nmpqScale = {
+var nmpqScale = {
     1: 'Sangat tidak setuju',
     2: 'Tidak setuju',
     3: 'Agak tidak setuju',
@@ -40,7 +40,7 @@ const nmpqScale = {
     7: 'Sangat setuju',
 };
 
-const nmpqItems = [
+var nmpqItems = [
     'Saya merasa tidak nyaman tidak memiliki akses informasi melalui smartphone saya.',
     'Saya akan terganggu jika saya tidak dapat melihat informasi yang saya butuhkan di smartphone saya.',
     'Saya cemas ketika tidak bisa mendapatkan update berita (misalnya, suatu kejadian/peristiwa, cuaca, produk, barang/jasa dll.) di smartphone saya.',
@@ -63,14 +63,14 @@ const nmpqItems = [
     'Jika tidak memegang/membawa smartphone, saya merasa aneh karena saya tidak tahu harus berbuat apa.',
 ];
 
-const dassScale = {
+var dassScale = {
     1: 'Tidak sesuai dengan saya sama sekali atau tidak pernah',
     2: 'Sedikit sesuai dengan saya pada saat tertentu',
     3: 'Cukup sesuai dengan saya pada sebagian besar waktu',
     4: 'Sangat sesuai dengan saya hampir setiap waktu',
 };
 
-const dassDepressionItems = [
+var dassDepressionItems = [
     'Saya tidak dapat merasakan perasaan yang positif.',
     'Saya sulit mendapatkan semangat untuk melakukan sesuatu.',
     'Saya merasa tidak memiliki masa depan.',
@@ -80,7 +80,7 @@ const dassDepressionItems = [
     'Saya merasa hidup ini tidak berarti.',
 ];
 
-const dassAnxietyItems = [
+var dassAnxietyItems = [
     'Saya merasa rongga mulut saya kering.',
     'Saya mengalami kesulitan bernapas (misalnya seringkali terengah-engah atau tidak dapat bernapas padahal tidak melakukan aktivitas fisik sebelumnya).',
     'Saya merasa gemetar (misalnya pada tangan).',
@@ -90,7 +90,7 @@ const dassAnxietyItems = [
     'Saya merasa ketakutan tanpa alasan yang jelas.',
 ];
 
-const nomophobiaCategories = [
+var nomophobiaCategories = [
     {
         key: 'none', badge: 1, color: 'green', min: 20, max: 20,
         title: 'Anda tidak memiliki kecenderungan nomophobia.',
@@ -124,8 +124,7 @@ const nomophobiaCategories = [
     },
 ];
 
-// Skor mentah 7 item (skala 1-4) dikali 2 sebelum dibandingkan ke kategori di bawah.
-const dassDepressionCategories = [
+var dassDepressionCategories = [
     {
         key: 'normal', badge: 1, color: 'green', min: 0, max: 18,
         title: 'Anda tidak menunjukkan gejala depresi bermakna.',
@@ -167,8 +166,7 @@ const dassDepressionCategories = [
     },
 ];
 
-// Skor mentah 7 item (skala 1-4) dikali 2 sebelum dibandingkan ke kategori di bawah.
-const dassAnxietyCategories = [
+var dassAnxietyCategories = [
     {
         key: 'normal', badge: 1, color: 'green', min: 0, max: 14,
         title: 'Anda tidak menunjukkan gejala kecemasan bermakna.',

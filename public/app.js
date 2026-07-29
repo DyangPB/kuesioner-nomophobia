@@ -10,7 +10,7 @@ document.addEventListener('alpine:init', () => {
         submitError: '',
         results: null,
         carouselIndex: 0,
-        carouselSlides: ['nmpq', 'dass_depression', 'dass_anxiety', 'disclaimer'],
+        carouselSlides: ['nmpq', 'dass_depression', 'dass_anxiety'],
         touchStartX: null,
         showInfografis: false,
 
@@ -219,6 +219,7 @@ document.addEventListener('alpine:init', () => {
                     dass_anxiety: findCategory(dassAnxietyCategories, data.dass_anxiety_category),
                 };
                 this.carouselIndex = 0;
+                await new Promise((resolve) => setTimeout(resolve, 3000));
                 this.goTo('result');
             } catch (err) {
                 this.submitError = err.message || 'Terjadi kesalahan saat mengirim kuesioner. Silakan coba lagi.';
