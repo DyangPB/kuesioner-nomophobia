@@ -17,13 +17,19 @@
     <div class="w-full max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto min-h-screen px-6 sm:px-10 md:px-14 lg:px-16 py-10 md:py-16 flex flex-col">
 
         <!-- ============ PAGE 1: LANDING ============ -->
-        <section x-show="currentStepName === 'landing'" x-cloak class="flex-1 flex flex-col justify-center items-center text-center gap-8 py-16">
-            <h1 class="font-heading font-bold text-4xl md:text-6xl leading-tight max-w-2xl">Seberapa Lengket Kamu terhadap Ponselmu?</h1>
-            <p class="text-sm md:text-base leading-relaxed max-w-xs md:max-w-md">
+        <section x-show="currentStepName === 'landing'" x-cloak class="relative flex-1 flex flex-col justify-center items-center text-center gap-8 py-16 overflow-hidden">
+            <div class="cloud-wrap cloud-1"><div class="cloud"></div></div>
+            <div class="cloud-wrap cloud-2"><div class="cloud"></div></div>
+            <div class="cloud-wrap cloud-3"><div class="cloud"></div></div>
+            <div class="cloud-wrap cloud-4"><div class="cloud"></div></div>
+            <div class="cloud-wrap cloud-5"><div class="cloud"></div></div>
+
+            <h1 class="relative z-10 font-heading font-bold text-4xl md:text-6xl leading-tight max-w-2xl landing-fade-in" style="animation-delay: .1s">Seberapa Lengket Kamu terhadap Ponselmu?</h1>
+            <p class="relative z-10 text-sm md:text-base leading-relaxed max-w-xs md:max-w-md landing-fade-in" style="animation-delay: .3s">
                 Ayo cari tahu dengan menjadi partisipan penelitian dan mengisi kuisioner kecenderungan Nomophobia
                 (No Mobile Phone Phobia) pada diri kamu!
             </p>
-            <button type="button" class="btn-pill" @click="next()">selanjutnya</button>
+            <button type="button" class="relative z-10 btn-pill landing-fade-in" style="animation-delay: .5s" @click="next()">selanjutnya</button>
         </section>
 
         <!-- ============ PAGE 2: INFO NOMOPHOBIA ============ -->
@@ -169,7 +175,7 @@
                 <div class="flex flex-col gap-2">
                     <label class="option-row" @click="form.phone_activity = 'akademik'">
                         <span class="option-radio" :class="{ selected: form.phone_activity === 'akademik' }"><span class="dot"></span></span>
-                        <span class="text-sm"><strong>Akademik</strong> (belajar/membaca literatur kedokteran (e-book, artikel jurnal, website kesehatan); mengerjakan tugas atau quiz/mengakses aplikasi kedokteran interaktif (complete anatomy, HeartSounds, dll); menonton video pembelajaran)</span>
+                        <span class="text-sm">Akademik (belajar/membaca literatur kedokteran (e-book, artikel jurnal, website kesehatan); mengerjakan tugas atau quiz/mengakses aplikasi kedokteran interaktif (complete anatomy, HeartSounds, dll); menonton video pembelajaran)</span>
                     </label>
                     <label class="option-row" @click="form.phone_activity = 'belanja'">
                         <span class="option-radio" :class="{ selected: form.phone_activity === 'belanja' }"><span class="dot"></span></span>
@@ -368,7 +374,10 @@
                 <button type="button" class="btn-pill btn-pill-outline" @click="back()">&larr; kembali</button>
                 <button type="button" class="btn-pill" :disabled="submitting" @click="next()">
                     <span x-show="!submitting">lihat hasil &rarr;</span>
-                    <span x-show="submitting">mengirim...</span>
+                    <span x-show="submitting" x-cloak class="inline-flex items-center gap-2">
+                        <span class="spinner"></span>
+                        mengirim...
+                    </span>
                 </button>
             </div>
         </section>
@@ -442,6 +451,26 @@
                         </template>
                     </div>
 
+                    <div class="card-surface px-4 py-3 text-[11px] sm:text-xs leading-relaxed text-center max-w-xl">
+                        <p class="mb-2">
+                            PERHATIAN! Ketiga kuesioner tersebut merupakan self-report questionnaire yang dipengaruhi oleh
+                            persepsi subjektif partisipan. NMP-Q dan DASS-21 subskala depresi dan kecemasan merupakan
+                            INSTRUMEN SKRINING, bukan sebagai alat diagnostik. Skor yang diperoleh hanya menggambarkan
+                            tingkat kecenderungan maupun gejala yang dilaporkan oleh responden. Diagnosis gangguan
+                            depresi maupun kecemasan hanya dapat ditegakkan melalui pemeriksaan lanjutan dari psikiater,
+                            psikolog klinis, maupun tenaga profesional yang terkait.
+                        </p>
+                        <p class="mb-2">
+                            Terima kasih telah berpartisipasi dalam pengisian kuesioner ini! Bila ada pertanyaan,
+                            silahkan menghubungi kontak peneliti:
+                        </p>
+                        <p>
+                            Sherin Amalia<br>
+                            e-mail: sherinamalia02@gmail.com<br>
+                            Line / whatsapp: rinevlier / 082281499850
+                        </p>
+                    </div>
+
                     <div class="h-32 md:h-36"></div>
                 </div>
             </template>
@@ -464,18 +493,54 @@
 
         <!-- ============ INFOGRAFIS PAGE (overlay, with back button) ============ -->
         <section x-show="showInfografis" x-cloak class="flex-1 flex flex-col gap-6 py-8">
-            <button type="button" @click="showInfografis = false"
-                class="btn-pill btn-pill-outline self-start text-sm">
-                &larr; kembali
-            </button>
-
-            <h2 class="font-heading font-bold text-3xl text-center">Kenali Nomophobia</h2>
+            <h2 class="font-heading font-bold text-3xl text-center">Mari mengenal nomophobia!</h2>
 
             <img src="/images/edukasi/kenali-nomophobia.jpg"
                 alt="Infografis edukasi mengenai nomophobia"
                 class="w-full max-w-xs sm:max-w-sm mx-auto h-auto rounded-2xl border border-[#b06a82]/40 shadow-lg">
+
+            <div class="flex justify-between items-center max-w-xs sm:max-w-sm w-full mx-auto">
+                <button type="button" @click="showInfografis = false"
+                    class="btn-pill btn-pill-outline text-sm">
+                    &larr; kembali
+                </button>
+
+                <a href="/images/edukasi/kenali-nomophobia.jpg" download="infografis-nomophobia.jpg"
+                    class="btn-pill text-sm text-center">
+                    unduh infografis
+                </a>
+            </div>
         </section>
 
+    </div>
+
+    <!-- ============ OVERLAY: MENGHITUNG HASIL ============ -->
+    <!-- Tampil dari saat tombol "lihat hasil" ditekan sampai hasil siap. -->
+    <div x-show="showCalculating" x-cloak x-transition.opacity.duration.350ms
+        class="calc-overlay" role="status" aria-live="polite">
+
+        <canvas id="calc-canvas" class="calc-canvas" aria-hidden="true"></canvas>
+
+        <div class="calc-card">
+            <div class="calc-loader" aria-hidden="true">
+                <span class="calc-ring-track"></span>
+                <span class="calc-ring"></span>
+                <span class="calc-orb">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
+                    </svg>
+                </span>
+            </div>
+
+            <h2 class="font-heading calc-title">Menghitung hasil Anda...</h2>
+
+            <div class="calc-status-wrap">
+                <p class="calc-status" id="calc-status"></p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
