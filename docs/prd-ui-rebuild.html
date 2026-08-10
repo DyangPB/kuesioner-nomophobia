@@ -1,0 +1,1632 @@
+<title>PRD — Nomophobia Questionnaire UI Rebuild</title>
+
+<style>
+  :root {
+    --ground: #f4f2f6;
+    --surface: #ffffff;
+    --surface-2: #faf8fb;
+    --ink: #211d27;
+    --ink-soft: #4a4351;
+    --muted: #6f6878;
+    --rule: #e2dde7;
+    --rule-soft: #edeaf0;
+    --accent: #7a3350;
+    --accent-ink: #7a3350;
+    --accent-soft: #f4e7ed;
+    --on-accent: #ffffff;
+    --danger: #9e2f2a;
+    --danger-soft: #faece9;
+    --ok: #2f6b46;
+    --spec-ground: #fdf7f3;
+    --spec-rule: #ecd9de;
+    --shadow: 0 1px 2px rgba(33, 29, 39, .05), 0 8px 24px -12px rgba(33, 29, 39, .12);
+
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+    --mono: "Cascadia Code", "SF Mono", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #141219;
+      --surface: #1b1822;
+      --surface-2: #211d2a;
+      --ink: #ece8f1;
+      --ink-soft: #c3bccd;
+      --muted: #8e8799;
+      --rule: #2d2836;
+      --rule-soft: #241f2c;
+      --accent: #e59ab6;
+      --accent-ink: #f0b8ce;
+      --accent-soft: #2c1d26;
+      --danger: #e6968d;
+      --danger-soft: #2d1c1a;
+      --ok: #7fc79c;
+      --spec-ground: #221a20;
+      --spec-rule: #3c2d35;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #141219;
+    --surface: #1b1822;
+    --surface-2: #211d2a;
+    --ink: #ece8f1;
+    --ink-soft: #c3bccd;
+    --muted: #8e8799;
+    --rule: #2d2836;
+    --rule-soft: #241f2c;
+    --accent: #e59ab6;
+    --accent-ink: #f0b8ce;
+    --accent-soft: #2c1d26;
+    --danger: #e6968d;
+    --danger-soft: #2d1c1a;
+    --ok: #7fc79c;
+    --spec-ground: #221a20;
+    --spec-rule: #3c2d35;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0 56px;
+  }
+
+  @media (min-width: 1060px) {
+    .shell { grid-template-columns: 208px minmax(0, 1fr); }
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    grid-column: 1 / -1;
+    padding: 72px 0 40px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .masthead h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 5.2vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 20ch;
+  }
+
+  .deck {
+    font-size: 1.075rem;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 32px;
+    padding-top: 6px;
+  }
+
+  .meta div { display: flex; flex-direction: column; gap: 2px; }
+
+  .meta dt {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .meta dd { margin: 0; font-size: .875rem; color: var(--ink-soft); }
+
+  /* ---------- palette specimen ---------- */
+
+  .specimen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 4px;
+  }
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 11px 5px 6px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: var(--surface);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  .chip i {
+    width: 15px;
+    height: 15px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
+  }
+
+  /* product palette specimens — the warm world this cool document describes */
+  .sw-rose { background: #f8c9d3; }
+  .sw-peach { background: #fbdcc4; }
+  .sw-cream { background: #fdecd3; }
+  .sw-plum { background: #7a3350; }
+  .sw-accent { background: #c9587e; }
+  .sw-ink { background: #3a2b30; }
+
+  /* ---------- nav rail ---------- */
+
+  .rail { display: none; }
+
+  @media (min-width: 1060px) {
+    .rail {
+      display: block;
+      position: sticky;
+      top: 0;
+      align-self: start;
+      max-height: 100vh;
+      overflow-y: auto;
+      padding: 40px 0;
+    }
+  }
+
+  .rail-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px;
+  }
+
+  .rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+
+  .rail a {
+    display: block;
+    padding: 4px 0 4px 12px;
+    border-left: 2px solid var(--rule);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .8125rem;
+    line-height: 1.4;
+  }
+
+  .rail a:hover { color: var(--ink); border-left-color: var(--ink-soft); }
+
+  .rail a.on {
+    color: var(--accent-ink);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ---------- article ---------- */
+
+  .doc {
+    min-width: 0;
+    padding-top: 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+  }
+
+  section { scroll-margin-top: 24px; display: flex; flex-direction: column; gap: 18px; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.7rem;
+    line-height: 1.2;
+    letter-spacing: -.01em;
+    margin: 0;
+    text-wrap: balance;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  h2 .num {
+    font-family: var(--mono);
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    color: var(--accent-ink);
+    flex: none;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: .95rem;
+    font-weight: 650;
+    letter-spacing: .005em;
+    margin: 14px 0 0;
+  }
+
+  p { margin: 0; max-width: 72ch; }
+
+  .doc > section > p,
+  .doc > section > ul,
+  .doc > section > ol { color: var(--ink-soft); }
+
+  a { color: var(--accent-ink); text-underline-offset: 2px; }
+
+  ul, ol { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 7px; max-width: 72ch; }
+
+  li::marker { color: var(--muted); }
+
+  strong { font-weight: 650; color: var(--ink); }
+
+  code {
+    font-family: var(--mono);
+    font-size: .84em;
+    background: var(--surface-2);
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+    padding: .1em .34em;
+    color: var(--ink);
+  }
+
+  .lede {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--accent);
+    padding-left: 18px;
+  }
+
+  /* ---------- prompt blocks ---------- */
+
+  .prompt {
+    background: var(--spec-ground);
+    border: 1px solid var(--spec-rule);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .prompt-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 9px 10px 9px 14px;
+    border-bottom: 1px solid var(--spec-rule);
+    background: var(--surface);
+  }
+
+  .prompt-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .copy {
+    font-family: var(--sans);
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .01em;
+    color: var(--surface);
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 13px;
+    cursor: pointer;
+    flex: none;
+  }
+
+  :root[data-theme="dark"] .copy,
+  .copy { color: #fff; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .copy { color: #221720; }
+  }
+
+  :root[data-theme="dark"] .copy { color: #221720; }
+
+  .copy:hover { filter: brightness(1.08); }
+  .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .copy[data-done="1"] { background: var(--ok); }
+
+  .prompt pre {
+    margin: 0;
+    padding: 18px 16px 20px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: .795rem;
+    line-height: 1.72;
+    color: var(--ink);
+    white-space: pre-wrap;
+    word-break: break-word;
+    tab-size: 2;
+  }
+
+  /* ---------- screens ---------- */
+
+  .screen {
+    border-top: 1px solid var(--rule);
+    padding-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .screen-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+
+  .screen-num {
+    font-family: var(--mono);
+    font-size: .7rem;
+    letter-spacing: .08em;
+    color: var(--surface);
+    background: var(--ink);
+    border-radius: 4px;
+    padding: 2px 7px;
+    flex: none;
+  }
+
+  .screen-head h3 { font-size: 1.12rem; font-family: var(--serif); font-weight: 700; margin: 0; }
+
+  .screen-key {
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--muted);
+  }
+
+  .flag {
+    font-family: var(--mono);
+    font-size: .65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border: 1px solid var(--spec-rule);
+  }
+
+  /* ---------- tables ---------- */
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--surface);
+  }
+
+  table { border-collapse: collapse; width: 100%; font-size: .855rem; }
+
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+
+  thead th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  td code { background: transparent; border: none; padding: 0; }
+
+  .num-col { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .range { color: var(--muted); }
+  .nil { color: var(--muted); }
+
+  /* ---------- callouts ---------- */
+
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: .92rem;
+    color: var(--ink-soft);
+  }
+
+  .note.stop {
+    border-left-color: var(--danger);
+    background: var(--danger-soft);
+  }
+
+  .note-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .note.stop .note-title { color: var(--danger); }
+
+  /* ---------- checklist ---------- */
+
+  .check { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0; max-width: none; }
+
+  .check li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: .9rem;
+    color: var(--ink-soft);
+  }
+
+  .check li:last-child { border-bottom: none; }
+
+  .check li::before {
+    content: "";
+    flex: none;
+    width: 15px;
+    height: 15px;
+    margin-top: 4px;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: var(--surface);
+  }
+
+  /* ---------- rejected list ---------- */
+
+  .rejected { display: flex; flex-wrap: wrap; gap: 7px; padding: 0; list-style: none; max-width: none; }
+
+  .rejected li {
+    font-family: var(--mono);
+    font-size: .74rem;
+    padding: 3px 10px;
+    border: 1px dashed var(--rule);
+    border-radius: 999px;
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--danger);
+  }
+
+  footer {
+    grid-column: 1 / -1;
+    margin-top: 72px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-size: .8rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 24px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+
+<div class="shell">
+
+  <header class="masthead">
+    <span class="eyebrow">Product Requirements Document · v1.0</span>
+    <h1>Rebuilding the Nomophobia Questionnaire UI</h1>
+    <p class="deck">
+      A screen-by-screen brief for regenerating the survey interface in Google Stitch, and layering
+      React Bits motion on top of it — without touching a single validated questionnaire item, scoring
+      threshold, or API field.
+    </p>
+
+    <dl class="meta">
+      <div><dt>Instrument</dt><dd>NMP-Q · DASS-21 (D+A)</dd></div>
+      <div><dt>Platform</dt><dd>Cloudflare Workers · D1 · R2</dd></div>
+      <div><dt>UI language</dt><dd>Bahasa Indonesia</dd></div>
+      <div><dt>Researcher</dt><dd>Sherin Amalia</dd></div>
+      <div><dt>Dated</dt><dd>11 Aug 2026</dd></div>
+    </dl>
+
+    <div class="specimen">
+      <span class="chip"><i class="sw-rose"></i>#f8c9d3 rose</span>
+      <span class="chip"><i class="sw-peach"></i>#fbdcc4 peach</span>
+      <span class="chip"><i class="sw-cream"></i>#fdecd3 cream</span>
+      <span class="chip"><i class="sw-plum"></i>#7a3350 plum</span>
+      <span class="chip"><i class="sw-accent"></i>#c9587e accent</span>
+      <span class="chip"><i class="sw-ink"></i>#3a2b30 ink</span>
+    </div>
+  </header>
+
+  <nav class="rail" aria-label="Contents">
+    <p class="rail-title">Contents</p>
+    <ol>
+      <li><a href="#how">How to use this</a></li>
+      <li><a href="#context">1 · Context</a></li>
+      <li><a href="#goals">2 · Goals &amp; non-goals</a></li>
+      <li><a href="#system">3 · Design system prompt</a></li>
+      <li><a href="#screens">4 · Screen prompts</a></li>
+      <li><a href="#motion">5 · React Bits motion map</a></li>
+      <li><a href="#tech">6 · Technical plan</a></li>
+      <li><a href="#ux">7 · UX changes</a></li>
+      <li><a href="#constraints">8 · Hard constraints</a></li>
+      <li><a href="#api">9 · API contract</a></li>
+      <li><a href="#accept">10 · Acceptance</a></li>
+      <li><a href="#appendix">Appendix</a></li>
+    </ol>
+  </nav>
+
+  <article class="doc">
+
+    <!-- ============ HOW TO USE ============ -->
+    <section id="how">
+      <h2><span class="num">00</span> How to use this</h2>
+      <p class="lede">
+        Three audiences read this document, and they need different parts of it. Sections 3 and 4 are
+        written to be pasted verbatim into Stitch. Sections 5–7 are for whoever builds the React app.
+        Sections 8–10 are the guardrails both must respect.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Section</th><th>Reader</th><th>What to do with it</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>3 · Design system</strong></td>
+              <td>Google Stitch</td>
+              <td>Paste first, as the opening prompt. It fixes the art direction for every screen that follows.</td>
+            </tr>
+            <tr>
+              <td><strong>4 · Screens</strong></td>
+              <td>Google Stitch</td>
+              <td>Paste one block at a time. Stitch produces markedly better output per-screen than it does when asked for a whole app at once.</td>
+            </tr>
+            <tr>
+              <td><strong>5 · Motion map</strong></td>
+              <td>Developers</td>
+              <td>Stitch cannot generate React Bits. This is the animation layer that goes on top of Stitch's output.</td>
+            </tr>
+            <tr>
+              <td><strong>8 · Constraints</strong></td>
+              <td>Everyone</td>
+              <td>Read before writing code. Violating any item here invalidates the research data.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Working with Stitch on this project</h3>
+      <ul>
+        <li>Upload the existing illustrations from <code>public/images/</code> as reference images so Stitch keeps the soft, hand-drawn style rather than substituting stock iconography.</li>
+        <li>Ask for <strong>mobile-first</strong> designs throughout. The overwhelming majority of respondents fill this on a phone.</li>
+        <li>Every prompt below ends with an instruction to leave the Indonesian copy untranslated. Keep that line — Stitch will otherwise helpfully rewrite it into English.</li>
+        <li>Iterate with follow-up edits (<em>"make the Likert row larger on mobile"</em>) rather than regenerating a screen from scratch.</li>
+      </ul>
+    </section>
+
+    <!-- ============ CONTEXT ============ -->
+    <section id="context">
+      <h2><span class="num">01</span> Context</h2>
+      <p>
+        A research questionnaire for medical students in cohorts 2023–2025, measuring <strong>nomophobia</strong>
+        (NMP-Q, 20 items) alongside <strong>depression and anxiety symptoms</strong> (DASS-21 subscales, 7 items each).
+        Respondents get an instantly scored result and educational content. Data lands in Cloudflare D1, optional
+        screentime screenshots land in R2, and the researcher exports everything as XLSX.
+      </p>
+      <p>
+        <strong>Users:</strong> medical students, 18–25, mostly on mobile, filling this once, unpaid, for roughly
+        fifteen minutes of their time.
+      </p>
+      <p>
+        <strong>Why redesign.</strong> The current UI works but reads as flat and long. Twenty NMP-Q items sit stacked on
+        a single scrolling page with bare numeric radio labels (<code>1 2 3 4 5 6 7</code>) at 10px — high cognitive load
+        and a real drop-off risk on a phone. There is no progress indicator, no save-and-resume, and a single generic
+        error line at the bottom of each step.
+      </p>
+
+      <div class="note">
+        <span class="note-title">The thing that shapes every design decision here</span>
+        <p>
+          Two of the three instruments screen for depression and anxiety. The redesign has to feel calm and
+          non-alarming on those screens. Expressive motion belongs on the landing and result screens — not on
+          <em>"Saya merasa hidup ini tidak berarti."</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ GOALS ============ -->
+    <section id="goals">
+      <h2><span class="num">02</span> Goals &amp; non-goals</h2>
+
+      <h3>Goals</h3>
+      <ol>
+        <li><strong>Reduce perceived length</strong> — visible progress, chunked questions, a sense of momentum.</li>
+        <li><strong>Raise completion rate</strong> — the primary success metric.</li>
+        <li><strong>Modernize the visuals</strong> while keeping the warm rose/peach identity. It was designed for this study; it should not be thrown away.</li>
+        <li><strong>Add a considered motion layer</strong> — expressive on landing and results, restrained on clinical screens.</li>
+        <li><strong>Improve mobile ergonomics</strong> — larger tap targets, labeled Likert anchors, no horizontal cramming.</li>
+        <li><strong>Stay honest</strong> — this is a screening tool, not a diagnosis, and the disclaimer stays prominent.</li>
+      </ol>
+
+      <h3>Non-goals</h3>
+      <ul>
+        <li>Changing questionnaire item text, scale wording, item order, or scoring thresholds.</li>
+        <li>Changing the backend API contract.</li>
+        <li>Accounts, login, or individual-level analytics tracking.</li>
+        <li>Dark mode — the palette is a warm light gradient by design.</li>
+        <li>Multi-language support.</li>
+      </ul>
+    </section>
+
+    <!-- ============ DESIGN SYSTEM ============ -->
+    <section id="system">
+      <h2><span class="num">03</span> Design system prompt</h2>
+      <p>Paste this into Stitch before anything else. Everything in section 4 assumes it has already been set.</p>
+
+      <div class="prompt">
+        <div class="prompt-bar">
+          <span class="prompt-label">Stitch prompt · paste first</span>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <pre>Design a warm, calm, editorial-feeling web app for a psychology research questionnaire aimed at university students in Indonesia. Mobile-first, also responsive to tablet and desktop. The mood is gentle, human, and reassuring — not clinical, not corporate, not "startup SaaS".
+
+COLOR PALETTE (use exactly these):
+- Page background: a soft diagonal gradient at 135°, from #f8c9d3 (rose pink) at 0%, through #fbdcc4 (peach) at 55%, to #fdecd3 (warm cream) at 100%.
+- Primary text: #3a2b30 (deep warm brown)
+- Primary deep accent: #7a3350 (deep plum-rose) — buttons, active states, heading accents
+- Primary light accent: #c9587e (rose) — used only as the light end of gradients
+- Muted border / inactive stroke: #b06a82 at 40–100% opacity
+- Card surface: white at 35% opacity with a 6px backdrop blur, corner radius 24px, no hard border
+- Primary button: pill shape (fully rounded), 90° linear gradient #c9587e to #7a3350, white text, soft shadow 0 6px 16px rgba(122,51,80,0.35)
+- Secondary button: pill shape, transparent background, 2px border #7a3350, text #7a3350
+- Result severity badges — circular, 56px, white bold numeral inside. Level 1 green #7cc576, level 2 yellow #e8c34a, level 3 orange #f0a15d, level 4 red #e2604f, level 5 dark red #8a2c40
+
+TYPOGRAPHY:
+- Headings: Playfair Display, weights 600/700/800. Large, generous line-height, sentence case (often all-lowercase for playful lines).
+- Body: Lora, weights 400/500/600. Comfortable reading size, relaxed line-height of 1.6 or more.
+- Never use a geometric sans for headings. The serif pairing is the identity.
+
+SHAPE AND TEXTURE:
+- Pill-shaped buttons and inputs, fully rounded, never square.
+- Frosted glass cards floating on the gradient.
+- Soft, hand-drawn illustration style for spot images, with a paper-like feel. Illustrations sit directly on the gradient with no white box behind them.
+- Floating soft white cloud shapes as ambient background decoration on the landing screen.
+- Generous whitespace. Content column max-width about 640px on mobile and tablet, up to about 1100px on desktop, always centered.
+
+COMPONENT CONVENTIONS:
+- Radio option: 24px circle, 2px border #b06a82, filled with a gradient dot when selected, with a springy pop scale-in on select.
+- Text input: full-width pill, 1px border #b06a82, translucent white fill, border darkens to #7a3350 on focus.
+- File upload: full-width dashed-border drop zone, 2px dashed #b06a82, 16px radius, upload arrow icon, translucent white fill.
+- Disclaimer and note blocks: frosted card, smaller text, centered.
+
+ACCESSIBILITY:
+- Minimum tap target 44x44px.
+- Body text never smaller than 14px, helper text never smaller than 12px.
+- All interactive elements need a visible focus ring in #7a3350.
+- Text contrast must pass WCAG AA against the light gradient. Use #3a2b30 or #7a3350, never light grey.
+
+Keep all Indonesian text exactly as written — do not translate, do not paraphrase.</pre>
+      </div>
+    </section>
+
+    <!-- ============ SCREENS ============ -->
+    <section id="screens">
+      <h2><span class="num">04</span> Screen prompts</h2>
+      <p>
+        The app is a linear wizard of eight steps plus one overlay. The numbering below is the actual navigation
+        order, which the rebuild must preserve.
+      </p>
+
+      <!-- 1 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">01</span>
+          <h3>Landing</h3>
+          <span class="screen-key">landing</span>
+        </div>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design the landing screen of the questionnaire app. Full-height, vertically centered, centered text, with soft white cloud shapes floating in the background at the edges — some drifting in from the left, some from the right. They should read as ambient decoration, not content.
+
+Content, top to bottom:
+1. Large serif headline, up to two lines, max-width about 640px: "Seberapa Lengket Kamu terhadap Ponselmu?"
+2. Supporting paragraph, smaller, max-width about 440px: "Ayo cari tahu dengan menjadi partisipan penelitian dan mengisi kuisioner kecenderungan Nomophobia (No Mobile Phone Phobia) pada diri kamu!"
+3. A single primary pill button, lowercase label: "selanjutnya"
+
+Also show a small, unobtrusive line near the bottom: "± 15 menit · 41 pertanyaan · anonim"
+
+No navigation bar, no logo, no footer. The headline should feel like a magazine cover line.
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">02</span>
+          <h3>Info · what nomophobia is</h3>
+          <span class="screen-key">info</span>
+        </div>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design an educational screen that introduces the concept of nomophobia before the questionnaire begins. Three illustrated points stacked vertically, each centered: an illustration on top, a short paragraph below it.
+
+Header, centered:
+- Small serif line: "tapi sebelum itu,"
+- Large serif headline below it: "kenali sedikit mengenai nomophobia!"
+
+Point 1 — illustration of a person chained to a phone, about 200px wide, then text:
+"nomophobia (no mobile phone phobia) adalah kondisi cemas, takut, maupun tidak nyaman ketika seseorang tidak dapat mengakses ponselnya."
+Bold the phrase "nomophobia (no mobile phone phobia)".
+
+Point 2 — illustration of a disconnected Wi-Fi icon, about 160px wide, then text:
+"nomophobia dapat timbul karena berbagai keadaan, contohnya seperti kehabisan daya ponsel atau kehilangan akses internet saat dibutuhkan."
+
+Point 3 — illustration of a person hugging their knees, anxious, about 200px wide, then text:
+"nomophobia saat ini telah berkembang menjadi fenomena psikologis yang umum di dunia dan telah dikaitkan dengan berbagai psikopatologi, seperti depresi dan kecemasan."
+
+Bottom: centered primary pill button "selanjutnya".
+
+Illustrations sit directly on the gradient background with no white card behind them.
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">03</span>
+          <h3>Consent</h3>
+          <span class="screen-key">consent</span>
+        </div>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design an informed-consent screen. One large frosted glass card, centered vertically, containing:
+
+Bold line: "Kuesioner ini terdiri dari:"
+Then a numbered list:
+1. "Tujuh pertanyaan tentang identitas dan sosiodemografi"
+2. "Dua puluh pertanyaan mengenai nomophobia (Nomophobia Questionnaire)"
+3. "Tujuh pertanyaan mengenai gejala depresi (DASS-21 Subskala Depresi)"
+4. "Tujuh pertanyaan mengenai gejala kecemasan (DASS-21 Subskala Kecemasan)"
+
+Then these paragraphs, in order:
+- "Pengisian kuesioner membutuhkan waktu ± 15 menit." (bold "15 menit")
+- "Setelah mengisi kuesioner, Anda akan memperoleh hasil skor tingkat gejala nomophobia beserta edukasi terkait nomophobia." (bold "hasil skor tingkat gejala nomophobia" and "edukasi terkait nomophobia")
+- "Tenang saja, penelitian ini tidak menimbulkan risiko maupun efek samping yang membahayakan!"
+- Bold: "Klik jika Anda bersedia menjadi partisipan penelitian!"
+
+Below the card, centered, one wide primary pill button with a long label: "saya bersedia dan mulai pengisian kuesioner". The button must wrap gracefully on mobile without overflowing.
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">04</span>
+          <h3>Biodata &amp; phone habits</h3>
+          <span class="screen-key">biodata</span>
+        </div>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design a form screen collecting participant identity and phone habits. A slim sticky progress bar sits at the top of the viewport showing step 1 of 4 of the questionnaire portion.
+
+Centered serif page title: "Identitas dan Kebiasaan Partisipan"
+
+Then these fields, each as its own visually separated group with a bold serif label above it:
+
+1. Label "Nama atau Inisial" — a single full-width pill text input, no placeholder, marked optional.
+
+2. Label "Usia" — two radio options stacked: "< 18 tahun", "≥ 18 tahun"
+
+3. Label "Jenis Kelamin" — two radio options side by side: "Perempuan", "Laki-laki"
+
+4. Label "Angkatan" — three radio options in a row: "2023", "2024", "2025"
+
+5. Label "Apakah anda memiliki perangkat lain selain ponsel?" — five stacked radio options:
+   "Hanya ponsel"
+   "Tablet/iPad/sejenis"
+   "Laptop/komputer/sejenis"
+   "Konsol gim seperti Nintendo Switch/PlayStation/sejenis"
+   "Lainnya"
+
+6. Label "Kegiatan seperti apa yang Anda lakukan ketika menggunakan ponsel?" — four stacked radio options with long multi-line labels that must wrap cleanly, with the radio circle top-aligned to the first line of text:
+   "Akademik (belajar/membaca literatur kedokteran (e-book, artikel jurnal, website kesehatan); mengerjakan tugas atau quiz/mengakses aplikasi kedokteran interaktif (complete anatomy, HeartSounds, dll); menonton video pembelajaran)"
+   "Belanja atau berbisnis di e-commerce atau platform sejenis"
+   "Komunikasi (chat, telepon, video-call)"
+   "Hiburan (bermain gim, mengakses media sosial, streaming video pendek/film, menggambar, mendengarkan musik)"
+
+7. Label "Berapa lama rata-rata durasi penggunaan ponsel Anda per hari?" — three stacked radio options: "< 4 jam", "4-6 jam", "> 6 jam"
+
+8. Label "Silahkan mengunggah rata-rata penggunaan ponsel anda berdasarkan screentime mingguan pada bagian pengaturan ponsel Anda!" with a lighter "(opsional)" tag. Below it: two example screenshots side by side, each with a caption underneath. Left caption: "Android: Setelan/Pengaturan > Digital Wellbeing > grafik rata-rata mingguan". Right caption: "iOS: Setelan/Pengaturan > Screen Time/Waktu Layar > Mingguan". Then a small helper line: "Contoh acuan: tangkapan layar durasi penggunaan ponsel mingguan. (opsional jika ponsel Anda tidak memiliki fitur laporan mingguan)". Then a full-width dashed-border drop zone with an upload arrow icon, primary text "Klik atau tarik file ke sini" and secondary text "format jpg/png, maks 5MB".
+
+Bottom row: secondary outline pill button "← kembali" on the left, primary pill button "selanjutnya" on the right. Reserve a line above the buttons for an error message in red.
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">05</span>
+          <h3>NMP-Q · 20 items, 7-point Likert</h3>
+          <span class="screen-key">nmpq</span>
+          <span class="flag">Highest drop-off risk</span>
+        </div>
+        <p>
+          This is where respondents abandon. It gets the largest behavioral change in the rebuild: chunking,
+          anchor labels, and a sticky counter.
+        </p>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design the main questionnaire screen: 20 statements each answered on a 7-point agreement scale. Optimize hard for mobile — this is the longest part of the survey and users must not feel overwhelmed.
+
+Top of viewport: a sticky, slim progress bar with a label like "Pertanyaan 5 dari 20", plus the section name "NMP-Q". The bar fills with the #c9587e to #7a3350 gradient.
+
+Page header, which scrolls away:
+- Serif title: "Nomophobia Questionnaire (NMP-Q)"
+- Intro paragraph: "Kuesioner ini bertujuan mengukur derajat keparahan nomophobia, mulai dari tidak ada nomophobia, nomophobia ringan, nomophobia sedang, nomophobia berat. Bacalah setiap pertanyaan dengan hati-hati dan pilih satu jawaban yang sesuai dengan kondisi diri Anda selama satu bulan terakhir. Tidak ada jawaban yang benar maupun salah!"
+- A frosted card showing the scale legend, titled "Skala penelitian adalah sebagai berikut:" and listing:
+  1 = Sangat tidak setuju
+  2 = Tidak setuju
+  3 = Agak tidak setuju
+  4 = Netral
+  5 = Agak setuju
+  6 = Setuju
+  7 = Sangat setuju
+  On mobile this legend should be collapsible, defaulting to open, with a small "sembunyikan" toggle.
+
+Then the question list. Present the 20 items in chunks of 5 per view, not all 20 at once. Each chunk is a card group and the user advances chunk by chunk. Four chunks total.
+
+Each question is its own frosted card containing:
+- The statement text at a comfortable reading size. This is the most important text on screen — do not shrink it.
+- Below it, a 7-point Likert selector rendered as a horizontal row of 7 circular radio buttons, evenly spaced, uniform in size, each with its number beneath. Minimum 44px tap target each.
+- Anchor labels under the ends of the row: "Sangat tidak setuju" on the far left, "Sangat setuju" on the far right, small and muted.
+- When a question is answered, the card takes on a subtle settled state so users can see at a glance what is done.
+
+Example statement to render in the mockup: "Saya merasa tidak nyaman tidak memiliki akses informasi melalui smartphone saya."
+
+If the 7-circle row is too cramped at 360px width, use a segmented pill control spanning the full width instead, still with numbers 1 to 7 and the two anchor labels underneath. Show both variants.
+
+Bottom row: secondary outline pill "← kembali" left, primary pill "selanjutnya →" right, with an error line reserved above them in red reading "Mohon jawab semua pertanyaan sebelum melanjutkan."
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">06</span>
+          <h3>DASS-21 · depression subscale</h3>
+          <span class="screen-key">dass_depression</span>
+          <span class="flag">Low-motion zone</span>
+        </div>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design a short symptom-screening screen: 7 statements, each answered on a 4-point frequency scale. The tone here must be noticeably calmer and more respectful than the rest of the app — more whitespace, softer motion, nothing playful. These questions are about depressive symptoms.
+
+Sticky progress bar at top, labeled "DASS-21 · Depresi".
+
+Header, centered:
+- Serif title: "Depression, Anxiety, and Stress Scale-21 (DASS-21)"
+- Serif subtitle beneath: "Subskala depresi"
+- Intro paragraph: "Kuesioner ini bertujuan mengukur derajat keparahan gejala depresi. Bacalah setiap pertanyaan dengan hati-hati dan pilih satu jawaban yang sesuai dengan diri Anda selama satu minggu terakhir. Tidak ada jawaban yang benar maupun salah!"
+- Frosted legend card titled "Skala penelitian adalah sebagai berikut:" listing:
+  0 = Tidak sesuai dengan saya sama sekali atau tidak pernah
+  1 = Sedikit sesuai dengan saya pada saat tertentu
+  2 = Cukup sesuai dengan saya pada sebagian besar waktu
+  3 = Sangat sesuai dengan saya hampir setiap waktu
+
+Then 7 question cards, all visible on one scrolling page — this section is short, do not chunk it. Each card: the statement, centered, then 4 large radio options. Unlike the NMP-Q screen, each of the 4 options here shows its full text label next to the circle, stacked vertically. The wording matters and users should not have to look back at the legend.
+
+The 7 statements, in this exact order:
+1. "Saya tidak dapat merasakan perasaan yang positif."
+2. "Saya sulit mendapatkan semangat untuk melakukan sesuatu."
+3. "Saya merasa tidak memiliki masa depan."
+4. "Saya merasa sedih dan murung."
+5. "Saya tidak antusias terhadap sesuatu."
+6. "Saya merasa saya tidak berharga."
+7. "Saya merasa hidup ini tidak berarti."
+
+Bottom row: secondary outline pill "← kembali", primary pill "selanjutnya".
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">07</span>
+          <h3>DASS-21 · anxiety subscale</h3>
+          <span class="screen-key">dass_anxiety</span>
+          <span class="flag">Low-motion zone</span>
+        </div>
+        <p>Generate screen 06 first, then send this as a follow-up edit rather than a fresh prompt.</p>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch follow-up</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Same screen, with these changes:
+- Subtitle: "Subskala kecemasan"
+- Progress label: "DASS-21 · Kecemasan"
+- Intro paragraph: "Kuesioner ini bertujuan mengukur derajat keparahan gejala kecemasan. Bacalah setiap pertanyaan dengan hati-hati dan pilih satu jawaban yang sesuai dengan diri Anda selama satu minggu terakhir. Tidak ada jawaban yang benar maupun salah!"
+- The 7 statements, in this exact order:
+  1. "Saya merasa rongga mulut saya kering."
+  2. "Saya mengalami kesulitan bernapas (misalnya seringkali terengah-engah atau tidak dapat bernapas padahal tidak melakukan aktivitas fisik sebelumnya)."
+  3. "Saya merasa gemetar (misalnya pada tangan)."
+  4. "Saya merasa khawatir dengan situasi dimana saya mungkin menjadi panik dan mempermalukan diri sendiri."
+  5. "Saya merasa hampir panik."
+  6. "Saya merasakan kerja jantung saya (berdebar-debar) saat tidak melakukan aktivitas fisik."
+  7. "Saya merasa ketakutan tanpa alasan yang jelas."
+- The final button reads "lihat hasil →" and has a loading state showing a spinner with the text "mengirim...".
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">08</span>
+          <h3>Submitting interstitial</h3>
+          <span class="screen-key">new</span>
+          <span class="flag">New screen</span>
+        </div>
+        <p>
+          The app already waits about three seconds after submit before revealing results. Right now that time is a
+          bare spinner. Turn it into a designed moment — the one place a flourish costs nothing.
+        </p>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design a full-screen loading and transition state shown for about 3 seconds after the user submits the questionnaire, before results appear. Centered, calm, no progress percentage.
+
+- A soft animated visual centerpiece: abstract, warm, on-palette. Not a medical or clinical icon.
+- Serif line: "Menghitung hasil Anda..."
+- A smaller supporting line that cycles through three reassuring messages: "Menganalisis jawaban NMP-Q", then "Menganalisis gejala depresi", then "Menganalisis gejala kecemasan"
+
+No buttons. No way to cancel.
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">09</span>
+          <h3>Results carousel</h3>
+          <span class="screen-key">result</span>
+        </div>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design a results screen built as a 3-slide carousel. The three slides are the NMP-Q result, the DASS-21 depression result, and the DASS-21 anxiety result.
+
+Layout: one large centered frosted card as the active slide, with a smaller, blurred, dimmed, slightly scaled-down peek card partially visible on each side — hidden on mobile, visible from tablet up. Circular arrow buttons pinned at the left and right edges of the viewport, vertically centered. Dot indicators below the card. Swipeable on touch.
+
+The slide title above the card changes per slide:
+- Slide 1: "Hasil Nomophobia Questionnaire (NMP-Q)"
+- Slide 2: "Hasil DASS-21 Subskala Depresi"
+- Slide 3: "Hasil DASS-21 Subskala Kecemasan"
+
+Active card contents, centered:
+- A large circular severity badge with a white numeral inside, 1 to 5. Colors by level: 1 green #7cc576, 2 yellow #e8c34a, 3 orange #f0a15d, 4 red #e2604f, 5 dark red #8a2c40.
+- A serif headline stating the result, for example: "Anda mengalami nomophobia sedang."
+- One or two body paragraphs of explanation and advice, for example: "Hasil kuesioner menunjukkan bahwa Anda memiliki kecenderungan nomophobia pada tingkat sedang. Kondisi ini menunjukkan bahwa rasa takut atau tidak nyaman ketika tidak dapat mengakses ponsel mulai dirasakan dalam berbagai situasi dan berpotensi memengaruhi kenyamanan saat menjalani aktivitas sehari-hari." and "Membiasakan penggunaan ponsel secara bijak dan meluangkan waktu tanpa ponsel dapat membantu mencegah meningkatnya rasa cemas saat tidak dapat mengaksesnya."
+- Only on slide 1: an underlined text link "Klik disini untuk mengakses infografis seputar nomophobia"
+
+All three cards must be the same height so the layout does not jump between slides.
+
+Below the carousel, a frosted disclaimer card with small centered text:
+"PERHATIAN! Ketiga kuesioner tersebut merupakan self-report questionnaire yang dipengaruhi oleh persepsi subjektif partisipan. NMP-Q dan DASS-21 subskala depresi dan kecemasan merupakan INSTRUMEN SKRINING, bukan sebagai alat diagnostik. Skor yang diperoleh hanya menggambarkan tingkat kecenderungan maupun gejala yang dilaporkan oleh responden. Diagnosis gangguan depresi maupun kecemasan hanya dapat ditegakkan melalui pemeriksaan lanjutan dari psikiater, psikolog klinis, maupun tenaga profesional yang terkait."
+
+Then:
+"Terima kasih telah berpartisipasi dalam pengisian kuesioner ini! Bila ada pertanyaan, silahkan menghubungi kontak peneliti:"
+"Sherin Amalia"
+"e-mail: sherinamalia02@gmail.com"
+"Line / whatsapp: rinevlier / 082281499850"
+
+A primary pill button fixed at the bottom center of the viewport: "kembali ke menu awal".
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="screen">
+        <div class="screen-head">
+          <span class="screen-num">10</span>
+          <h3>Infographic overlay</h3>
+          <span class="screen-key">infografis</span>
+        </div>
+        <div class="prompt">
+          <div class="prompt-bar">
+            <span class="prompt-label">Stitch prompt</span>
+            <button class="copy" type="button">Copy</button>
+          </div>
+          <pre>Design a simple overlay screen showing an educational infographic image.
+
+- Centered serif title: "Mari mengenal nomophobia!"
+- Below it, a tall portrait infographic image, max-width about 380px, centered, with 16px rounded corners, a soft shadow, and a thin border. It should be tappable to open full-screen or zoom.
+- Below the image, a row with a secondary outline pill button "← kembali" on the left and a primary pill button "unduh infografis" on the right, both within the image's width.
+
+Keep all Indonesian text exactly as written.</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MOTION ============ -->
+    <section id="motion">
+      <h2><span class="num">05</span> React Bits motion map</h2>
+
+      <div class="note stop">
+        <span class="note-title">Stitch cannot generate this section</span>
+        <p>
+          Stitch outputs static HTML/CSS or a Figma file. React Bits is a copy-paste React library — you paste
+          component source into the project rather than installing a package. This section is the implementation
+          brief for whoever builds the React app on top of Stitch's output. Verify exact component names and props
+          against <a href="https://reactbits.dev">reactbits.dev</a>; the library moves.
+        </p>
+      </div>
+
+      <h3>Motion principles for this product</h3>
+      <ol>
+        <li><strong>Motion budget scales inversely with clinical seriousness.</strong> Landing and results: expressive. Biodata and NMP-Q: functional feedback only. DASS screens: near-zero decorative motion.</li>
+        <li><strong>Every animation is skippable.</strong> <code>prefers-reduced-motion: reduce</code> disables all decorative motion, leaving only opacity fades under 150ms.</li>
+        <li><strong>Nothing loops in peripheral vision while someone reads a question.</strong> Ambient background animation is landing and result only.</li>
+        <li><strong>No motion gates input.</strong> Entrance animations never delay interactivity.</li>
+      </ol>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Screen</th><th>Component</th><th>Purpose</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Landing</td>
+              <td><code>Aurora</code> / <code>Silk</code> / <code>Threads</code></td>
+              <td>Living gradient replacing the CSS clouds</td>
+              <td>WebGL — see the performance budget. <code>Silk</code> reads warmest with this palette. Fallback: keep the existing CSS clouds.</td>
+            </tr>
+            <tr>
+              <td>Landing</td>
+              <td><code>SplitText</code> / <code>BlurText</code></td>
+              <td>Headline reveals word by word</td>
+              <td>H1 only, once</td>
+            </tr>
+            <tr>
+              <td>Landing</td>
+              <td><code>AnimatedContent</code>, <code>FadeContent</code></td>
+              <td>Staggered entry for subhead and CTA</td>
+              <td>Replaces the current <code>landing-fade-in</code> CSS at .1s / .3s / .5s</td>
+            </tr>
+            <tr>
+              <td>Landing</td>
+              <td><code>StarBorder</code> / <code>Magnet</code></td>
+              <td>CTA button treatment</td>
+              <td>Pick one, not both</td>
+            </tr>
+            <tr>
+              <td>Info</td>
+              <td><code>AnimatedContent</code>, <code>ScrollReveal</code></td>
+              <td>Each illustration block fades up on scroll</td>
+              <td>Threshold ~0.2, subtle</td>
+            </tr>
+            <tr>
+              <td>Consent</td>
+              <td><code>SpotlightCard</code></td>
+              <td>Cursor-following highlight on the consent card</td>
+              <td>Desktop only</td>
+            </tr>
+            <tr>
+              <td>All steps</td>
+              <td><code>Stepper</code></td>
+              <td>The sticky progress indicator</td>
+              <td><strong>Highest-value addition in the rebuild.</strong> Needs adapting — our steps are externally controlled.</td>
+            </tr>
+            <tr>
+              <td>Biodata</td>
+              <td><code>AnimatedList</code></td>
+              <td>Field groups enter in sequence</td>
+              <td>Cheap, high polish</td>
+            </tr>
+            <tr>
+              <td>NMP-Q</td>
+              <td><code>AnimatedContent</code></td>
+              <td>Each 5-question chunk slides in</td>
+              <td>Direction reverses on "kembali"</td>
+            </tr>
+            <tr>
+              <td>NMP-Q</td>
+              <td>Existing CSS radio pop</td>
+              <td>Selection feedback</td>
+              <td>The <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> pop already in <code>app.css</code> is good. Port it, don't replace it.</td>
+            </tr>
+            <tr>
+              <td>NMP-Q</td>
+              <td><code>ElasticSlider</code></td>
+              <td>Alternative Likert input for mobile</td>
+              <td>A 1–7 slider may be faster than seven tap targets, but sliders bias responses toward the middle. <strong>Pilot it before shipping.</strong></td>
+            </tr>
+            <tr>
+              <td>DASS ×2</td>
+              <td><code>FadeContent</code> only</td>
+              <td>Opacity, ~200ms</td>
+              <td>Deliberately restrained</td>
+            </tr>
+            <tr>
+              <td>Submitting</td>
+              <td><code>Orb</code> / <code>Ballpit</code> + <code>TextType</code></td>
+              <td>Centerpiece and cycling status line</td>
+              <td>Fills the existing 3-second wait</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td><code>Carousel</code> / <code>CardSwap</code></td>
+              <td>The 3-slide result carousel</td>
+              <td>Must keep equal card heights, blurred side peeks, dots, swipe, arrow keys</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td><code>CountUp</code></td>
+              <td>Score climbs to its value</td>
+              <td>Requires surfacing the numeric score — see UX change 6</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td><code>Confetti</code></td>
+              <td>Celebration</td>
+              <td><strong>Green results only.</strong> Never celebrate a severe result.</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td><code>ShinyText</code> / <code>TiltedCard</code></td>
+              <td>Headline and card tilt</td>
+              <td>Tilt is desktop only, low intensity</td>
+            </tr>
+            <tr>
+              <td>Infographic</td>
+              <td><code>Lens</code> / <code>PixelTransition</code></td>
+              <td>Reveal and magnify</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Explicitly rejected</h3>
+      <p>Wrong register for a mental-health instrument, or dead weight on mobile where there is no cursor:</p>
+      <ul class="rejected">
+        <li>Hyperspeed</li>
+        <li>Balatro</li>
+        <li>LetterGlitch</li>
+        <li>FaultyTerminal</li>
+        <li>Galaxy</li>
+        <li>Lightning</li>
+        <li>SplashCursor</li>
+        <li>BlobCursor</li>
+        <li>ImageTrail</li>
+        <li>any animated background on DASS screens</li>
+        <li>confetti on a non-green result</li>
+      </ul>
+    </section>
+
+    <!-- ============ TECH ============ -->
+    <section id="tech">
+      <h2><span class="num">06</span> Technical plan</h2>
+
+      <h3>The stack change this requires</h3>
+      <p>
+        React Bits is React-only. The app today is Alpine.js served as static files. This rebuild means
+        introducing React.
+      </p>
+      <ol>
+        <li>Add <strong>Vite + React</strong>, building into <code>dist/</code>, and point <code>[assets] directory</code> in <code>wrangler.toml</code> at it.</li>
+        <li>Leave the Worker at <code>src/index.js</code> <strong>completely unchanged</strong> — it already falls through to <code>env.ASSETS.fetch(request)</code> for anything that isn't an API route.</li>
+        <li>Keep Tailwind v4. React Bits components are Tailwind-friendly. Preserve the custom CSS in <code>src/css/app.css</code> (buttons, radio pop, badges) as the base layer.</li>
+        <li><code>src/data.js</code> stays the single source of truth and the React app imports it directly. This finally kills the manual <code>cp src/data.js public/data.js</code> sync step documented in the README.</li>
+        <li>Pull in <code>motion</code>, <code>gsap</code>, and <code>ogl</code> only as individual components require them.</li>
+      </ol>
+
+      <div class="note">
+        <span class="note-title">Migration order</span>
+        <p>
+          The Alpine state machine in <code>public/app.js</code> is small and clean — <code>step</code>, <code>form</code>,
+          <code>validateCurrentStep()</code>, <code>submit()</code>, carousel index. Porting it to React state is a few
+          hours, not a rewrite. <strong>Port the logic verbatim first, verify parity against the current build, then
+          restyle.</strong> Doing both at once is how the DASS offset below gets broken without anyone noticing.
+        </p>
+      </div>
+
+      <h3>Performance budget</h3>
+      <p>Respondents are on Indonesian mobile networks. These are hard limits:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th class="num-col">Budget</th></tr></thead>
+          <tbody>
+            <tr><td>Initial JS, gzipped</td><td class="num-col">≤ 180 KB</td></tr>
+            <tr><td>LCP on 4G, mid-tier Android</td><td class="num-col">≤ 2.5 s</td></tr>
+            <tr><td>Total page weight, landing</td><td class="num-col">≤ 600 KB</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        This budget is what decides whether WebGL backgrounds ship at all. <code>three.js</code> alone blows it;
+        <code>ogl</code> is around 30 KB. Prefer OGL-based React Bits backgrounds, load them with <code>React.lazy</code>,
+        and only on landing and result. If the budget still can't be met, keep the existing pure-CSS cloud animation —
+        it costs zero JS and already looks good.
+      </p>
+
+      <h3>Accessibility requirements</h3>
+      <ul>
+        <li>Full keyboard navigation. Likert rows are radio groups navigable with arrow keys, one tab stop per question.</li>
+        <li>Correct semantics: <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> per question, <code>role="radiogroup"</code>, <code>aria-required</code>.</li>
+        <li><code>prefers-reduced-motion: reduce</code> disables all decorative motion. Hard requirement, not a nice-to-have.</li>
+        <li>Progress changes announced via <code>aria-live="polite"</code>.</li>
+        <li>On validation failure, focus moves to the first unanswered question rather than only showing a bottom error line.</li>
+      </ul>
+    </section>
+
+    <!-- ============ UX ============ -->
+    <section id="ux">
+      <h2><span class="num">07</span> Behavioral changes in scope</h2>
+      <p>Beyond visual restyling, these behavior changes are part of the rebuild.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th class="num-col">#</th><th>Change</th><th>Rationale</th><th>Risk</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num-col">1</td>
+              <td><strong>Sticky progress indicator</strong> on all questionnaire steps</td>
+              <td>Users currently have no idea how much of 41 questions is left</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td class="num-col">2</td>
+              <td><strong>Chunk NMP-Q into 4 groups of 5</strong></td>
+              <td>A 20-item wall of radio buttons is the biggest drop-off risk in the flow</td>
+              <td>Three extra taps; net positive</td>
+            </tr>
+            <tr>
+              <td class="num-col">3</td>
+              <td><strong>Anchor labels on the Likert row</strong></td>
+              <td>Bare <code>1…7</code> forces users to scroll back to the legend</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td class="num-col">4</td>
+              <td><strong>Inline per-question validation</strong> plus scroll-to-first-unanswered</td>
+              <td>The current single bottom error line doesn't say <em>which</em> question is missing</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td class="num-col">5</td>
+              <td><strong>Draft autosave to <code>localStorage</code></strong></td>
+              <td>Fifteen minutes is long enough to lose to a phone call or a dead battery</td>
+              <td>Must clear on successful submit; must not retain anything afterwards</td>
+            </tr>
+            <tr>
+              <td class="num-col">6</td>
+              <td><strong>Show the numeric score</strong> alongside the category on the result screen</td>
+              <td>The backend already returns all three scores and the frontend currently discards them. Also gives <code>CountUp</code> something to animate.</td>
+              <td><strong>Needs researcher approval.</strong> Showing raw scores to respondents is a study-design decision, not a UI one. Ask Sherin before shipping.</td>
+            </tr>
+            <tr>
+              <td class="num-col">7</td>
+              <td><strong>Answered-state on question cards</strong></td>
+              <td>Makes "what did I miss" scannable</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td class="num-col">8</td>
+              <td><strong>Designed submit interstitial</strong></td>
+              <td>The three-second wait already exists; make it feel intentional</td>
+              <td>None</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ CONSTRAINTS ============ -->
+    <section id="constraints">
+      <h2><span class="num">08</span> Hard constraints</h2>
+      <p>Non-negotiable. Violating any of these invalidates the research data.</p>
+
+      <h3>Instrument integrity</h3>
+      <ul>
+        <li>NMP-Q: exactly <strong>20 items</strong>, in the exact order in <code>src/data.js</code>, response values <strong>1–7</strong>.</li>
+        <li>DASS-21 Depression: exactly <strong>7 items</strong>, exact order, submitted values <strong>1–4</strong>.</li>
+        <li>DASS-21 Anxiety: exactly <strong>7 items</strong>, exact order, submitted values <strong>1–4</strong>.</li>
+        <li><strong>Item wording is verbatim.</strong> No shortening, no rephrasing, no friendlier rewrites, no emoji.</li>
+        <li>Scale labels are verbatim.</li>
+      </ul>
+
+      <div class="note stop">
+        <span class="note-title">Read this one twice · the DASS display/value offset</span>
+        <p>
+          The DASS scales are <strong>displayed to the user as 0, 1, 2, 3</strong> but <strong>submitted to the server
+          as 1, 2, 3, 4</strong>. In the current code this is <code>x-text="entry.value - 1"</code> on display while
+          <code>entry.value</code> is what gets sent (<code>public/index.html:312</code>), and the Worker validates
+          <code>1 ≤ v ≤ 4</code> (<code>src/index.js:63</code>).
+        </p>
+        <p>
+          Any reimplementation must preserve this offset exactly. Getting it wrong silently shifts every DASS score by
+          7 points and pushes respondents into the wrong severity category — with no error, no warning, and no way to
+          tell from the exported spreadsheet that it happened.
+        </p>
+      </div>
+
+      <h3>Scoring thresholds</h3>
+      <p>Owned by <code>src/data.js</code>. Do not duplicate these in UI code.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Instrument</th>
+              <th class="num-col">None / normal</th>
+              <th class="num-col">Mild</th>
+              <th class="num-col">Moderate</th>
+              <th class="num-col">Severe</th>
+              <th class="num-col">Extremely severe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>NMP-Q <span class="range">(20–140)</span></td>
+              <td class="num-col">20</td><td class="num-col">21–59</td><td class="num-col">60–99</td><td class="num-col">100–140</td><td class="num-col nil">—</td>
+            </tr>
+            <tr>
+              <td>DASS Depression <span class="range">(7–28)</span></td>
+              <td class="num-col">0–9</td><td class="num-col">10–13</td><td class="num-col">14–20</td><td class="num-col">21–27</td><td class="num-col">28</td>
+            </tr>
+            <tr>
+              <td>DASS Anxiety <span class="range">(7–28)</span></td>
+              <td class="num-col">0–7</td><td class="num-col">8–9</td><td class="num-col">10–14</td><td class="num-col">15–19</td><td class="num-col">20–28</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Ethics</h3>
+      <ul>
+        <li><strong>The disclaimer stays.</strong> Full text, on the result screen, legible. Not collapsed behind a "read more", not in 9px grey. It is an ethical requirement, not fine print.</li>
+        <li><strong>Researcher contact details stay</strong> on the result screen, unchanged.</li>
+      </ul>
+    </section>
+
+    <!-- ============ API ============ -->
+    <section id="api">
+      <h2><span class="num">09</span> API contract · frozen</h2>
+      <p>
+        The Worker must not need any changes. The frontend keeps sending exactly this to
+        <code>POST /submit</code> as <code>multipart/form-data</code>.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Accepted values</th></tr></thead>
+          <tbody>
+            <tr><td><code>name</code></td><td>free text, optional, ≤ 255 chars</td></tr>
+            <tr><td><code>age_group</code></td><td><code>under18</code> · <code>18plus</code></td></tr>
+            <tr><td><code>gender</code></td><td><code>perempuan</code> · <code>laki-laki</code></td></tr>
+            <tr><td><code>cohort</code></td><td><code>2023</code> · <code>2024</code> · <code>2025</code></td></tr>
+            <tr><td><code>other_device</code></td><td><code>hanya_ponsel</code> · <code>tablet</code> · <code>laptop</code> · <code>konsol_gim</code> · <code>lainnya</code></td></tr>
+            <tr><td><code>phone_activity</code></td><td><code>akademik</code> · <code>belanja</code> · <code>komunikasi</code> · <code>hiburan</code></td></tr>
+            <tr><td><code>daily_usage</code></td><td><code>kurang_4</code> · <code>4_6</code> · <code>lebih_6</code></td></tr>
+            <tr><td><code>screentime_image</code></td><td>optional file, jpg/png only, ≤ 5 MB</td></tr>
+            <tr><td><code>nmpq_answers[0…19]</code></td><td>integer 1–7</td></tr>
+            <tr><td><code>dass_depression_answers[0…6]</code></td><td>integer 1–4</td></tr>
+            <tr><td><code>dass_anxiety_answers[0…6]</code></td><td>integer 1–4</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-bar">
+          <span class="prompt-label">Response · 200</span>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <pre>{
+  "nmpq_score": 0,
+  "nomophobia_category": "none | mild | moderate | severe",
+  "dass_depression_score": 0,
+  "dass_depression_category": "normal | mild | moderate | severe | extremely_severe",
+  "dass_anxiety_score": 0,
+  "dass_anxiety_category": "normal | mild | moderate | severe | extremely_severe"
+}</pre>
+      </div>
+
+      <p>
+        Validation failures return <code>422</code> with <code>{ "message": …, "errors": { field: […] } }</code>.
+        Other routes, untouched: <code>GET /export/xlsx?token=…</code> and <code>GET /screentime-image/:key</code>.
+      </p>
+    </section>
+
+    <!-- ============ ACCEPTANCE ============ -->
+    <section id="accept">
+      <h2><span class="num">10</span> Acceptance criteria</h2>
+      <ul class="check">
+        <li>All eight steps plus the infographic overlay implemented, same order, same navigation semantics — going back preserves answers.</li>
+        <li>All questionnaire copy byte-identical to <code>src/data.js</code>.</li>
+        <li>The DASS display-0-3 / submit-1-4 offset verified by inspecting an actual network request.</li>
+        <li>A full submission produces the same D1 row and the same XLSX export as the current build. <strong>Diff a before/after export as the parity test.</strong></li>
+        <li>Optional screentime upload still works, still enforces jpg/png ≤ 5 MB, still lands in R2.</li>
+        <li>Validation blocks progress everywhere it does today, and now names the specific unanswered question.</li>
+        <li>Progress indicator accurate on every step.</li>
+        <li>A complete keyboard-only run-through is possible, start to finish.</li>
+        <li><code>prefers-reduced-motion: reduce</code> removes all decorative motion.</li>
+        <li>Lighthouse mobile: Performance ≥ 90, Accessibility ≥ 95.</li>
+        <li>Verified on real iOS Safari and Android Chrome, 360px minimum width.</li>
+        <li>Disclaimer and researcher contact present and legible on the result screen.</li>
+        <li>Deploys with <code>npm run deploy</code> to Cloudflare Workers with no Worker code changes.</li>
+      </ul>
+    </section>
+
+    <!-- ============ APPENDIX ============ -->
+    <section id="appendix">
+      <h2><span class="num">—</span> Appendix</h2>
+
+      <h3>Source of truth</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>What</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr><td>Questionnaire items, scales, categories, thresholds</td><td><code>src/data.js</code></td></tr>
+            <tr><td>Current wizard logic</td><td><code>public/app.js</code></td></tr>
+            <tr><td>Current markup and all UI copy</td><td><code>public/index.html</code></td></tr>
+            <tr><td>Current design tokens and animations</td><td><code>src/css/app.css</code></td></tr>
+            <tr><td>API, scoring, export</td><td><code>src/index.js</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Existing assets to reuse</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Used on</th></tr></thead>
+          <tbody>
+            <tr><td><code>images/info/nomophobia-chained.png</code></td><td>Info screen, point 1</td></tr>
+            <tr><td><code>images/info/nomophobia-wifi-off.png</code></td><td>Info screen, point 2</td></tr>
+            <tr><td><code>images/info/nomophobia-anxious-hug.png</code></td><td>Info screen, point 3</td></tr>
+            <tr><td><code>images/info/screentime-example-android.jpeg</code></td><td>Biodata, upload guidance</td></tr>
+            <tr><td><code>images/info/screentime-example-ios.jpeg</code></td><td>Biodata, upload guidance</td></tr>
+            <tr><td><code>images/edukasi/kenali-nomophobia.jpg</code></td><td>Infographic overlay</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The three <code>info/</code> illustrations currently render with <code>mix-blend-mode: multiply</code> so they
+        sit on the gradient without a white box. Preserve that.
+      </p>
+    </section>
+
+  </article>
+
+  <footer>
+    <span>Kuesioner Nomophobia · UI rebuild PRD v1.0</span>
+    <span>Source: <code>docs/PRD-UI-Rebuild.md</code></span>
+    <span>Instruments: NMP-Q · DASS-21</span>
+  </footer>
+
+</div>
+
+<script>
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var pre = btn.closest(".prompt").querySelector("pre");
+      var text = pre.textContent;
+      var done = function () {
+        btn.textContent = "Copied";
+        btn.dataset.done = "1";
+        setTimeout(function () {
+          btn.textContent = "Copy";
+          delete btn.dataset.done;
+        }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+      function fallback() {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); done(); } catch (e) { btn.textContent = "Press Ctrl+C"; }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+  var targets = links
+    .map(function (a) { return document.querySelector(a.getAttribute("href")); })
+    .filter(Boolean);
+
+  if ("IntersectionObserver" in window && targets.length) {
+    var visible = new Set();
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { visible.add(entry.target.id); }
+        else { visible.delete(entry.target.id); }
+      });
+      var first = targets.find(function (t) { return visible.has(t.id); });
+      links.forEach(function (a) {
+        a.classList.toggle("on", !!first && a.getAttribute("href") === "#" + first.id);
+      });
+    }, { rootMargin: "0px 0px -70% 0px", threshold: 0 });
+    targets.forEach(function (t) { observer.observe(t); });
+  }
+</script>
