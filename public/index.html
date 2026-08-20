@@ -451,27 +451,30 @@
                         </template>
                     </div>
 
-                    <div class="card-surface px-4 py-3 text-[11px] sm:text-xs leading-relaxed text-center max-w-xl">
-                        <p class="mb-2">
-                            PERHATIAN! Ketiga kuesioner tersebut merupakan self-report questionnaire yang dipengaruhi oleh
+                    <div class="px-4 text-center max-w-xl">
+                        <p class="mb-3 text-sm sm:text-base leading-relaxed">
+                            <strong class="font-heading font-bold text-lg sm:text-xl tracking-wide text-[#7a3350]">PERHATIAN!</strong>
+                            Ketiga kuesioner tersebut merupakan <em>self-report questionnaire</em> yang dipengaruhi oleh
                             persepsi subjektif partisipan. NMP-Q dan DASS-21 subskala depresi dan kecemasan merupakan
-                            INSTRUMEN SKRINING, bukan sebagai alat diagnostik. Skor yang diperoleh hanya menggambarkan
+                            <strong class="font-bold">INSTRUMEN SKRINING, bukan sebagai alat diagnostik</strong>. Skor yang diperoleh hanya menggambarkan
                             tingkat kecenderungan maupun gejala yang dilaporkan oleh responden. Diagnosis gangguan
                             depresi maupun kecemasan hanya dapat ditegakkan melalui pemeriksaan lanjutan dari psikiater,
                             psikolog klinis, maupun tenaga profesional yang terkait.
                         </p>
-                        <p class="mb-2">
+                        <p class="mb-3 text-sm sm:text-base leading-relaxed">
                             Terima kasih telah berpartisipasi dalam pengisian kuesioner ini! Bila ada pertanyaan,
                             silahkan menghubungi kontak peneliti:
                         </p>
-                        <p>
-                            Sherin Amalia<br>
+                        <p class="text-xs sm:text-sm leading-relaxed">
+                            <strong class="font-semibold">Sherin Amalia</strong><br>
                             e-mail: sherinamalia02@gmail.com<br>
                             Line / whatsapp: rinevlier / 082281499850
                         </p>
                     </div>
 
-                    <div class="h-32 md:h-36"></div>
+                    <button type="button" class="btn-pill" @click="restart()">
+                        kembali ke menu awal
+                    </button>
                 </div>
             </template>
 
@@ -483,11 +486,6 @@
             <button type="button" x-show="results && !showInfografis" x-cloak @click="carouselNext()" aria-label="selanjutnya"
                 class="carousel-arrow flex fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 rounded-full border-2 border-[#7a3350] bg-white/60 text-[#7a3350] items-center justify-center hover:bg-white/90">
                 &rarr;
-            </button>
-
-            <button type="button" x-show="results && !showInfografis" x-cloak
-                class="btn-pill fixed bottom-6 left-1/2 -translate-x-1/2 z-30" @click="restart()">
-                kembali ke menu awal
             </button>
         </section>
 
