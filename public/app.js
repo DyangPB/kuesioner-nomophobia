@@ -23,6 +23,11 @@ const CALC_TYPING = {
     gap: 100,   // jeda sebelum kalimat berikutnya
 };
 
+// Jaring pengaman: overlay tetap tampil minimal selama ini, bahkan kalau
+// animasi teksnya gagal jalan. Tanpa ini, kegagalan animasi bikin overlay
+// cuma berkedip sepersekian detik dan seolah-olah tidak pernah muncul.
+const CALC_MIN_DISPLAY_MS = 2500;
+
 const CALC_VERTEX_SHADER = `
 attribute vec2 a_position;
 varying vec2 v_texCoord;
@@ -235,8 +240,21 @@ function runCalcTyping() {
 
 function startCalcOverlay() {
     document.body.style.overflow = 'hidden';
-    startCalcShader();
-    return runCalcTyping();
+
+    // Shader dan animasi teks masing-masing diisolasi: kalau salah satu
+    // gagal, overlay tetap tampil dan pengiriman kuesioner tetap jalan.
+    try {
+        startCalcShader();
+    } catch (err) {
+        console.error('[overlay] shader gagal dijalankan:', err);
+    }
+
+    try {
+        return runCalcTyping();
+    } catch (err) {
+        console.error('[overlay] animasi teks gagal dijalankan:', err);
+        return Promise.resolve();
+    }
 }
 
 function stopCalcOverlay() {
