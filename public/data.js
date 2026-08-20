@@ -126,14 +126,14 @@ var nomophobiaCategories = [
 
 var dassDepressionCategories = [
     {
-        key: 'normal', badge: 1, color: 'green', min: 0, max: 9,
+        key: 'normal', badge: 1, color: 'green', min: 0, max: 18,
         title: 'Anda tidak menunjukkan gejala depresi bermakna.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda tidak menunjukkan gejala depresi yang bermakna. Pertahankan dengan menjaga pola hidup sehat serta meluangkan waktu untuk kegiatan yang positif.',
         ],
     },
     {
-        key: 'mild', badge: 2, color: 'yellow', min: 10, max: 13,
+        key: 'mild', badge: 2, color: 'yellow', min: 19, max: 26,
         title: 'Anda menunjukkan gejala depresi ringan.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala depresi pada tingkat ringan. Anda mungkin mulai merasakan kondisi tersebut pada waktu-waktu tertentu. Tetap jaga pola hidup sehat dan luangkan waktu untuk mencurahkan perasaan dan keadaan Anda kepada orang yang dipercaya.',
@@ -141,7 +141,7 @@ var dassDepressionCategories = [
         ],
     },
     {
-        key: 'moderate', badge: 3, color: 'orange', min: 14, max: 20,
+        key: 'moderate', badge: 3, color: 'orange', min: 27, max: 40,
         title: 'Anda menunjukkan gejala depresi sedang.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala depresi pada tingkat sedang. Gejala tersebut mungkin mulai memengaruhi aktivitas sehari-hari, pekerjaan, maupun hubungan dengan orang lain.',
@@ -149,7 +149,7 @@ var dassDepressionCategories = [
         ],
     },
     {
-        key: 'severe', badge: 4, color: 'red', min: 21, max: 27,
+        key: 'severe', badge: 4, color: 'red', min: 41, max: 54,
         title: 'Anda menunjukkan gejala depresi berat.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala depresi pada tingkat berat. Kondisi ini berpotensi memberikan dampak yang signifikan terhadap fungsi sehari-hari dan kualitas hidup.',
@@ -157,7 +157,7 @@ var dassDepressionCategories = [
         ],
     },
     {
-        key: 'extremely_severe', badge: 5, color: 'darkred', min: 28, max: 28,
+        key: 'extremely_severe', badge: 5, color: 'darkred', min: 55, max: 56,
         title: 'Anda menunjukkan gejala depresi sangat berat.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala depresi pada tingkat sangat berat. Kondisi ini memerlukan perhatian lebih lanjut karena dapat berdampak besar terhadap kesejahteraan dan aktivitas sehari-hari.',
@@ -168,14 +168,14 @@ var dassDepressionCategories = [
 
 var dassAnxietyCategories = [
     {
-        key: 'normal', badge: 1, color: 'green', min: 0, max: 7,
+        key: 'normal', badge: 1, color: 'green', min: 0, max: 14,
         title: 'Anda tidak menunjukkan gejala kecemasan bermakna.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda tidak menunjukkan gejala kecemasan yang bermakna. Pertahankan kondisi ini dengan menjaga keseimbangan aktivitas, istirahat yang cukup, dan menerapkan cara-cara positif dalam menghadapi tekanan sehari-hari.',
         ],
     },
     {
-        key: 'mild', badge: 2, color: 'yellow', min: 8, max: 9,
+        key: 'mild', badge: 2, color: 'yellow', min: 15, max: 18,
         title: 'Anda menunjukkan gejala kecemasan ringan.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala kecemasan pada tingkat ringan. Gejala yang dirasakan mungkin muncul pada situasi tertentu, namun umumnya masih dapat dikelola. Anda dapat mencoba mengenali pemicu kecemasan untuk membantu mengelola gejala yang dirasakan.',
@@ -183,7 +183,7 @@ var dassAnxietyCategories = [
         ],
     },
     {
-        key: 'moderate', badge: 3, color: 'orange', min: 10, max: 14,
+        key: 'moderate', badge: 3, color: 'orange', min: 19, max: 28,
         title: 'Anda menunjukkan gejala kecemasan sedang.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala kecemasan pada tingkat sedang. Gejala tersebut mulai berpotensi memengaruhi konsentrasi, aktivitas, atau kenyamanan dalam menjalani keseharian.',
@@ -191,7 +191,7 @@ var dassAnxietyCategories = [
         ],
     },
     {
-        key: 'severe', badge: 4, color: 'red', min: 15, max: 19,
+        key: 'severe', badge: 4, color: 'red', min: 29, max: 38,
         title: 'Anda menunjukkan gejala kecemasan berat.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala kecemasan pada tingkat berat. Kondisi ini dapat memberikan dampak yang cukup besar terhadap aktivitas sehari-hari maupun kualitas hidup.',
@@ -199,7 +199,7 @@ var dassAnxietyCategories = [
         ],
     },
     {
-        key: 'extremely_severe', badge: 5, color: 'darkred', min: 20, max: 28,
+        key: 'extremely_severe', badge: 5, color: 'darkred', min: 39, max: 56,
         title: 'Anda menunjukkan gejala kecemasan sangat berat.',
         body: [
             'Hasil kuesioner menunjukkan bahwa Anda memiliki gejala kecemasan pada tingkat sangat berat. Kondisi ini memerlukan perhatian lebih lanjut karena dapat berdampak besar terhadap kesejahteraan dan aktivitas sehari-hari.',

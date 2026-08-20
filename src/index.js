@@ -82,8 +82,9 @@ async function handleSubmit(request, env) {
     }
 
     const nmpqScore = nmpqAnswers.reduce((a, b) => a + b, 0);
-    const dassDepScore = dassDepAnswers.reduce((a, b) => a + b, 0);
-    const dassAnxScore = dassAnxAnswers.reduce((a, b) => a + b, 0);
+    // Skor DASS dikali 2 mengikuti konvensi skor resmi DASS-21 (dibandingkan ke cutoff yang juga sudah dikali 2).
+    const dassDepScore = dassDepAnswers.reduce((a, b) => a + b, 0) * 2;
+    const dassAnxScore = dassAnxAnswers.reduce((a, b) => a + b, 0) * 2;
 
     const nomophobiaCategory = resolveCategory(nmpqScore, nomophobiaCategories);
     const dassDepCategory = resolveCategory(dassDepScore, dassDepressionCategories);
