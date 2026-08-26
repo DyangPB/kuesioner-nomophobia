@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cek Perangkat</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 1.5rem; background: #fdecd3; color: #3a2b30; }
+  h1 { font-size: 1.25rem; margin: 0 0 1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: 1.5rem; }
+  td { padding: .55rem .4rem; border-bottom: 1px solid rgba(122,51,80,.25); vertical-align: top; }
+  td:first-child { color: #7a3350; white-space: nowrap; padding-right: 1rem; }
+  td:last-child { font-weight: 700; }
+  .ya { color: #1a7f37; }
+  .tidak { color: #b3261e; }
+  #ua { font-size: .8rem; font-weight: 400; word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>Cek Perangkat &mdash; screenshot halaman ini</h1>
+<table id="t"></table>
+<script>
+  var mq = function (q) { return matchMedia(q).matches; };
+  var aturanTablet = '(min-width: 768px) and (hover: none) and (pointer: coarse)';
+  var baris = [
+    ['innerWidth x innerHeight', innerWidth + ' x ' + innerHeight],
+    ['screen', screen.width + ' x ' + screen.height],
+    ['devicePixelRatio', devicePixelRatio],
+    ['hover: none', mq('(hover: none)')],
+    ['pointer: coarse', mq('(pointer: coarse)')],
+    ['lebar >= 768px', mq('(min-width: 768px)')],
+    ['ATURAN TABLET AKTIF?', mq(aturanTablet)]
+  ];
+  var html = '';
+  for (var i = 0; i < baris.length; i++) {
+    var v = baris[i][1];
+    if (v === true) v = '<span class="ya">YA</span>';
+    else if (v === false) v = '<span class="tidak">TIDAK</span>';
+    html += '<tr><td>' + baris[i][0] + '</td><td>' + v + '</td></tr>';
+  }
+  html += '<tr><td>user agent</td><td id="ua">' + navigator.userAgent + '</td></tr>';
+  document.getElementById('t').innerHTML = html;
+</script>
+</body>
+</html>
