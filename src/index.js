@@ -37,8 +37,14 @@ function corsHeaders() {
 async function handleSubmit(request, env) {
     const form = await request.formData();
 
-    const name = (form.get('name') || '').toString().slice(0, 255);
+    const name = (form.get('name') || '').toString().trim().slice(0, 255);
+    const nim = (form.get('nim') || '').toString().trim().slice(0, 50);
     const errors = {};
+
+    // Nama dan NIM kini wajib. Divalidasi juga di sini, bukan hanya di browser,
+    // karena validasi sisi klien bisa dilewati.
+    if (!name) errors.name = ['Nama atau inisial wajib diisi.'];
+    if (!nim) errors.nim = ['NIM wajib diisi.'];
 
     for (const field of Object.keys(ALLOWED)) {
         const value = form.get(field);
@@ -113,13 +119,14 @@ async function handleSubmit(request, env) {
 
     await env.DB.prepare(
         `INSERT INTO submissions (
-            name, age_group, gender, cohort, other_device, phone_activity, daily_usage,
+            name, nim, age_group, gender, cohort, other_device, phone_activity, daily_usage,
             screentime_image_path, nmpq_answers, nmpq_score, nomophobia_category,
             dass_depression_answers, dass_depression_score, dass_depression_category,
             dass_anxiety_answers, dass_anxiety_score, dass_anxiety_category, created_at
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(
         name || null,
+        nim || null,
         form.get('age_group'),
         form.get('gender'),
         form.get('cohort'),
@@ -167,7 +174,7 @@ async function handleExport(request, env) {
     ).all();
 
     const headers = [
-        'ID', 'Nama/Inisial', 'Usia', 'Jenis Kelamin', 'Angkatan',
+        'ID', 'Nama/Inisial', 'NIM', 'Usia', 'Jenis Kelamin', 'Angkatan',
         'Perangkat Lain', 'Aktivitas Ponsel', 'Durasi Harian', 'Link Gambar Screentime',
     ];
     nmpqItems.forEach((_, i) => headers.push(`NMPQ_${i + 1}`));
@@ -191,6 +198,7 @@ async function handleExport(request, env) {
         const row = [
             s.id,
             s.name || '',
+            s.nim || '',
             fieldLabels.age_group[s.age_group] || s.age_group,
             fieldLabels.gender[s.gender] || s.gender,
             s.cohort,

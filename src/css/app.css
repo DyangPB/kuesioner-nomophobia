@@ -36,6 +36,8 @@ body {
 }
 
 .btn-pill {
+    /* Teks tombol selalu satu baris; jangan pernah pecah jadi dua baris. */
+    white-space: nowrap;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -234,6 +236,23 @@ body {
     }
 }
 
+
+/* Di layar sempit padding bawaan 2.5rem kiri-kanan bikin dua tombol tidak muat
+   sebaris. PC tidak tersentuh aturan ini. */
+@media (max-width: 640px) {
+    .btn-pill {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tombol versi kecil untuk baris sempit (mis. pasangan tombol di bawah
+   infografis yang wadahnya cuma selebar gambar). Harus berada SETELAH aturan
+   @media di atas: specificity-nya sama, jadi urutan yang menentukan. */
+.btn-pill-sm {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.875rem;
+}
 
 .btn-pill-outline {
     background: transparent;
@@ -565,5 +584,91 @@ body {
 
     .calc-status::after {
         animation: none;
+    }
+}
+
+/* ============================================================
+   Ilustrasi dekoratif di dasar halaman landing.
+   Berada di dalam alur normal sebagai baris terakhir section, bukan overlay,
+   supaya tidak mungkin menimpa teks berapa pun tinggi kontennya.
+   ============================================================ */
+
+.landing-footer-art {
+    display: block;
+    /* Keluar dari padding kiri-kanan container supaya bisa mencapai tepi layar.
+       width 100vw hanya berlaku di bawah 900px; di atas itu max-width yang menahan. */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Menembus padding kiri-kanan container tanpa memakai 100vw. 100% di sini
+       adalah lebar isi container yang sudah bebas dari scrollbar, jadi hasilnya
+       tidak pernah melebihi area yang terlihat dan tidak ada ujung yang
+       terpangkas overflow-hidden. Angka rem = padding container x2. */
+    width: calc(100% + 3rem);
+    /* Rasio 2.6:1 dipertahankan penuh: height auto, tanpa object-fit, tanpa
+       max-height. Gambar mengecil/membesar mengikuti lebar layar saja. */
+    max-width: 900px;
+    height: auto;
+    /* Pengaman untuk jendela pendek: tinggi dibatasi, lalu contain menyusutkan
+       gambar secara utuh di dalam batas itu. Bukan cover -- cover memangkas.
+       Karena PNG-nya transparan, ruang sisa di kiri-kanan tidak terlihat. */
+    max-height: 38vh;
+    object-fit: contain;
+    object-position: center bottom;
+    /* Boleh menyusut saat ruang sempit supaya tidak pernah terpotong di bawah.
+       Aman dari gepeng karena object-fit: contain menjaga rasio; yang mengecil
+       kotaknya, gambarnya tetap utuh. min-height:0 diperlukan karena default
+       min-height:auto pada flex item menolak menyusut. */
+    flex-shrink: 1;
+    min-height: 0;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Layar pendek (HP landscape): hiasan disembunyikan. Karena scroll dikunci di
+   halaman landing, konten yang tidak muat akan terpotong dan tombol
+   "selanjutnya" bisa tidak terjangkau. */
+@media (min-width: 640px) {
+    .landing-footer-art {
+        width: calc(100% + 5rem);
+    }
+}
+
+@media (min-width: 768px) {
+    .landing-footer-art {
+        width: calc(100% + 7rem);
+    }
+}
+
+@media (min-width: 1024px) {
+    .landing-footer-art {
+        width: calc(100% + 8rem);
+    }
+}
+
+/* Tablet/iPad. Dibedakan lewat jenis input, bukan lebar layar: layar sentuh
+   tanpa mouse. Patokan lebar piksel tidak bisa dipakai karena banyak tablet
+   melaporkan viewport selebar laptop, sehingga aturannya salah sasaran dan
+   justru mengubah tampilan PC. */
+@media (min-width: 768px) and (hover: none) and (pointer: coarse) {
+    .landing-title {
+        font-size: 3rem;
+        line-height: 1.15;
+    }
+
+    .landing-footer-art {
+        width: 60%;
+        max-width: none;
+        left: 0;
+        transform: none;
+        align-self: flex-start;
+        max-height: 26vh;
+    }
+}
+
+@media (max-height: 520px) {
+    .landing-footer-art {
+        display: none;
     }
 }

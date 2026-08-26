@@ -295,6 +295,7 @@ document.addEventListener('alpine:init', () => {
 
         form: {
             name: '',
+            nim: '',
             age_group: '',
             gender: '',
             cohort: '',
@@ -419,7 +420,8 @@ document.addEventListener('alpine:init', () => {
 
             switch (this.currentStepName) {
                 case 'biodata':
-                    if (!this.form.age_group || !this.form.gender || !this.form.cohort ||
+                    if (!this.form.name.trim() || !this.form.nim.trim() ||
+                        !this.form.age_group || !this.form.gender || !this.form.cohort ||
                         !this.form.other_device || !this.form.phone_activity || !this.form.daily_usage) {
                         this.submitError = 'Mohon lengkapi semua pertanyaan sebelum melanjutkan.';
                         return false;
@@ -464,6 +466,7 @@ document.addEventListener('alpine:init', () => {
 
             const payload = new FormData();
             payload.append('name', this.form.name || '');
+            payload.append('nim', this.form.nim || '');
             payload.append('age_group', this.form.age_group);
             payload.append('gender', this.form.gender);
             payload.append('cohort', this.form.cohort);
